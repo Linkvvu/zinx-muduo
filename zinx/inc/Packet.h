@@ -4,6 +4,7 @@
 #include <zinx/inc/Copyable.h>
 #include <cstdint>
 #include <string>
+#include <memory>
 #include <algorithm>
 
 namespace zinx {
@@ -49,6 +50,10 @@ public:
 protected:
     std::string data_;
 };
+
+using PacketPtr = std::shared_ptr<Packet>;
+
 } // namespace zinx 
+
 
 #endif // ZINX_INTERFACE_PACKET_H

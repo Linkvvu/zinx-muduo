@@ -7,11 +7,11 @@
 namespace zinx {
 
 /// RequestContext is a abstract base class
-/// Dosen`t hold the lifecycle of any object
+/// The class Should hold the lifecycle of all context to prevent accessing destroyed data
 /// Users can implement a derived class to include more context
 class RequestContext : Copyable {
 public:
-    RequestContext(const muduo::TcpConnectionPtr& conn, Packet* p)
+    RequestContext(const muduo::TcpConnectionPtr& conn, const zinx::PacketPtr& p)
         : conn_(conn)
         , packet_(p)
         { }
@@ -20,16 +20,16 @@ public:
     { return conn_; }
 
     const Packet* GetPacket() const
-    { return packet_; }
+    { return packet_.get(); }
 
     Packet* GetPacket()
-    { return packet_; }
+    { return packet_.get(); }
 
     virtual ~RequestContext() noexcept = default;
 
 private:
-    const muduo::TcpConnectionPtr& conn_;   // refer to muduo::TcpConnection obj
-    Packet* packet_;    // aggregation
+    muduo::TcpConnectionPtr conn_;
+    PacketPtr packet_;
 };
 
 } // namespace zinx 
