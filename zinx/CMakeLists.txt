@@ -6,5 +6,4 @@ endif()
 
 file(GLOB ZINX_SRCS src/*)
 
-# add_executable(${PROJECT_NAME}_server ${ZINX_SRCS})
-# target_link_libraries(${PROJECT_NAME}_server ${MuduoNet_LIBRARY} pthread)
+add_subdirectory(test/v-0.1)

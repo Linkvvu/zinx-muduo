@@ -31,19 +31,16 @@ public:
         loop_.Loop();
     }
     
-    void AddRouter(Router* router) {
-        router_.reset(router);
-    }
+    bool AddHandler(uint32_t id, std::unique_ptr<Handler>&& handler);
 
 private:
     void HandleNewConnection(const muduo::TcpConnectionPtr& conn); 
-    void RouteAndHandle(RequestContext* req);
     void HandleOnMessage(const muduo::TcpConnectionPtr& conn, muduo::Buffer* buf, muduo::ReceiveTimePoint_t);
 
 private:
     muduo::EventLoop loop_ {};      // Must be declared on this line, Ensuring a longer lifecycle than other data-members
     muduo::TcpServer tcpServer_;   
-    std::unique_ptr<Router> router_ {nullptr};
+    std::unique_ptr<Router> router_;
     std::unique_ptr<PacketProcessor> pp_;
 };
 

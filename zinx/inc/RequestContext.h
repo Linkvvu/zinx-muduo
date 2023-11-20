@@ -2,12 +2,14 @@
 #define ZINX_INTERFACE_REQUEST_CONTEXT_H
 
 #include <muduo/TcpConnection.h>
-#include <zinx/inc/Copyable.h>
 #include <zinx/inc/Packet.h>
 
 namespace zinx {
 
-class RequestContext {
+/// RequestContext is a abstract base class
+/// Dosen`t hold the lifecycle of any object
+/// Users can implement a derived class to include more context
+class RequestContext : Copyable {
 public:
     RequestContext(const muduo::TcpConnectionPtr& conn, Packet* p)
         : conn_(conn)
@@ -16,6 +18,9 @@ public:
 
     const muduo::TcpConnectionPtr& GetConnection() const
     { return conn_; }
+
+    const Packet* GetPacket() const
+    { return packet_; }
 
     Packet* GetPacket()
     { return packet_; }
