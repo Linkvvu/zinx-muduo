@@ -1,8 +1,8 @@
 #if !defined(ZINX_INTERFACE_REQUEST_CONTEXT_H)
 #define ZINX_INTERFACE_REQUEST_CONTEXT_H
 
-#include <muduo/TcpConnection.h>
 #include <zinx/inc/Packet.h>
+#include <zinx/inc/ZConnection.h>
 
 namespace zinx {
 
@@ -16,7 +16,7 @@ public:
         , packet_(p)
         { }
 
-    const muduo::TcpConnectionPtr& GetConnection() const
+    const ZinxConnectionPtr& GetConnection() const
     { return conn_; }
 
     const Packet* GetPacket() const
@@ -28,7 +28,7 @@ public:
     virtual ~RequestContext() noexcept = default;
 
 private:
-    muduo::TcpConnectionPtr conn_;
+    ZinxConnectionPtr conn_;
     PacketPtr packet_;
 };
 

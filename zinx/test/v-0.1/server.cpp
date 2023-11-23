@@ -1,7 +1,14 @@
+#include <muduo/base/AsyncLogging.h>
+#include <muduo/base/Logging.h>
 #include <zinx/inc/ZServer.h>
 #include <zinx/inc/ZPacket.h>
 #include <iostream>
 #include <memory>
+
+/* set async logging */
+void asyncOutput(muduo::AsyncLogger* async_logger, const char* msg, size_t len) {
+    async_logger->Append(msg, len);
+}
 
 class TestHandler : public zinx::Handler {
 public:
@@ -25,8 +32,17 @@ public:
 };
 
 int main() {
-    zinx::ZinxServer server(muduo::InetAddr(8888), "zinx-v0.1");
+    /* start async logging */
+    muduo::AsyncLogger async_logger("zinx-muduo", 1024*300);
+    async_logger.Start();
+    muduo::Logger::SetOutputHandler(
+        [async_logger = &async_logger](const char* data, size_t len) {
+            async_logger->Append(data, len);
+        }, false);
+
+    /* start zinx-muduo server*/
+    auto server = zinx::NewZinxServer();
     std::unique_ptr<TestHandler> t_r = std::make_unique<TestHandler>();
-    server.AddHandler(1, std::make_unique<TestHandler>());
-    server.ListenAndServe();
+    server->AddHandler(1, std::make_unique<TestHandler>());
+    server->ListenAndServe();
 }

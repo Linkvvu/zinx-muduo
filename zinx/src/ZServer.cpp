@@ -5,8 +5,20 @@
 #include <zinx/inc/ZRouter.h>
 #include <zinx/inc/RequestContext.h>
 #include <zinx/inc/ZPacketProcessor.h>
+#include <iostream>
 
 using namespace zinx;
+
+/// TODO: use Singleton mode for ZinxServer
+
+std::unique_ptr<ZinxServer> zinx::NewZinxServer() {
+    /* reload config */
+    GlobalConfig::InitConfig();
+
+    return std::make_unique<ZinxServer>(
+        muduo::InetAddr(GlobalConfig::host, GlobalConfig::port),
+        GlobalConfig::server_name);
+}
 
 ZinxServer::ZinxServer(const muduo::InetAddr& addr, const std::string& name) 
     : tcpServer_(&loop_, addr, name)
@@ -14,6 +26,11 @@ ZinxServer::ZinxServer(const muduo::InetAddr& addr, const std::string& name)
     , pp_(std::make_unique<ZinxPacketProcessor>())
 {
     assert(dynamic_cast<ZinxRouter*>(router_.get()) != nullptr);
+    assert(dynamic_cast<ZinxPacketProcessor*>(pp_.get()) != nullptr);
+
+    tcpServer_.SetIoThreadNum(static_cast<int>(GlobalConfig::io_thread_num));
+
+    PrintConfig();
 
     tcpServer_.SetOnMessageCallback(
         [this] (const muduo::TcpConnectionPtr& conn, muduo::Buffer* buf, muduo::ReceiveTimePoint_t tp)
@@ -21,7 +38,12 @@ ZinxServer::ZinxServer(const muduo::InetAddr& addr, const std::string& name)
             this->HandleOnMessage(conn, buf, tp);
         }
     );
-    tcpServer_.SetConnectionCallback(std::bind(&ZinxServer::HandleNewConnection, this, std::placeholders::_1));
+
+    tcpServer_.SetConnectionCallback(
+        [this](const muduo::TcpConnectionPtr& conn) {
+            this->HandleNewConnection(conn);
+        }
+    );
 }
 
 bool ZinxServer::AddHandler(uint32_t id, std::unique_ptr<Handler> && handler) {
@@ -47,7 +69,26 @@ void ZinxServer::HandleOnMessage(const muduo::TcpConnectionPtr& conn, muduo::Buf
     router_->RouteAndHandle(request_context);
 }
 
-void ZinxServer::HandleNewConnection(const muduo::TcpConnectionPtr& conn) {
-    /// TODO: 
 
+void ZinxServer::PrintConfig() {
+    std::cout << GlobalConfig::logo
+        << "===== Global Config =====\n"
+        << "[Zinx-Muduo] Version: " << GlobalConfig::version
+        << "\n" << "ServerName: " << GlobalConfig::server_name
+        << "\n" << "Host: " << GlobalConfig::host
+        << "\n" << "Port: " << GlobalConfig::port
+        << "\n" << "IO-threads: " << GlobalConfig::io_thread_num
+        << "\n" << "Worker-threads: " << GlobalConfig::worker_thread_num
+        << "\n" << "Maximum Task-Queue Size:" << GlobalConfig::max_task_queue_size
+        << "\n";
+}
+
+void ZinxServer::HandleNewConnection(const muduo::TcpConnectionPtr& conn) {
+    if (conn->IsConnected()) {
+        if (onStartCb_)
+            onStartCb_(conn);
+    } else {
+        if (onCloseCb_)
+            onCloseCb_(conn);
+    }
 }

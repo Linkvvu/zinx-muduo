@@ -4,7 +4,7 @@
 namespace zinx {
 
 class Copyable {
-public:
+protected:
     Copyable() = default;
     Copyable(const Copyable&) = default;
     Copyable& operator=(const Copyable&) = default;

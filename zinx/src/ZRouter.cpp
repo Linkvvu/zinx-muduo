@@ -1,4 +1,5 @@
 #include <muduo/base/Logging.h>
+#include <zinx/inc/ZConfig.h>
 #include <zinx/inc/ZRouter.h>
 #include <zinx/inc/ZPacket.h>
 
@@ -45,6 +46,6 @@ void ZinxRouter::InitWorkerConfig() {
     // workerThreads_.SetMaxQueueSize();
 
     // workerThreads_.SetThreadInitCallback();
-    workerThreads_.Start(3);
-    LOG_INFO << "The ThreadPool is activate with " << 3 << " worker threads.";
+    workerThreads_.Start(static_cast<int>(GlobalConfig::worker_thread_num));
+    workerThreads_.SetMaxQueueSize(GlobalConfig::max_task_queue_size);
 }

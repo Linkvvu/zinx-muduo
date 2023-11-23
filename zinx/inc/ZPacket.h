@@ -18,13 +18,8 @@ namespace zinx {
  * @endcond
  */
 
+/// ZinxPacket is inherited from Packet, to implement the TLD packet
 class ZinxPacket : public Packet {
-public:
-    struct Header
-    {
-        uint32_t id;
-        uint32_t dataLength;
-    };
     
     static const uint32_t kHeaderLength = 8;
 

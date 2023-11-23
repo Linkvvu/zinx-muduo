@@ -4,7 +4,8 @@
 namespace zinx {
 
 class NonCopyable {
-private:
+protected:
+    NonCopyable() = default;
     NonCopyable(const NonCopyable&) = delete;
     NonCopyable& operator=(const NonCopyable&) = delete;
 };
