@@ -60,7 +60,7 @@ void GlobalConfig::InitConfig() {
 
     try {
         if (configs.find("host") != configs.end())
-            server_name = configs["host"];
+            host = configs["host"];
     } catch (const json::exception& e) {
         LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
     }
