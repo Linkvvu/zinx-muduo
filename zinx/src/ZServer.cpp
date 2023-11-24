@@ -1,5 +1,4 @@
 #include <muduo/EventLoop.h>
-#include <muduo/TcpConnection.h>
 #include <zinx/inc/ZPacket.h>
 #include <zinx/inc/ZServer.h>
 #include <zinx/inc/ZRouter.h>
@@ -8,17 +7,6 @@
 #include <iostream>
 
 using namespace zinx;
-
-/// TODO: use Singleton mode for ZinxServer
-
-std::unique_ptr<ZinxServer> zinx::NewZinxServer() {
-    /* reload config */
-    GlobalConfig::InitConfig();
-
-    return std::make_unique<ZinxServer>(
-        muduo::InetAddr(GlobalConfig::host, GlobalConfig::port),
-        GlobalConfig::server_name);
-}
 
 ZinxServer::ZinxServer(const muduo::InetAddr& addr, const std::string& name) 
     : tcpServer_(&loop_, addr, name)
