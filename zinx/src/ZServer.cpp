@@ -1,9 +1,11 @@
 #include <muduo/EventLoop.h>
-#include <zinx/inc/ZPacket.h>
+// #include <zinx/inc/ZPacket.h>
+#include <zinx/inc/ZPacket_LTD.h>
 #include <zinx/inc/ZServer.h>
 #include <zinx/inc/ZRouter.h>
 #include <zinx/inc/RequestContext.h>
-#include <zinx/inc/ZPacketProcessor.h>
+// #include <zinx/inc/ZPacketProcessor.h>
+#include <zinx/inc/ZPacketProcessor_LTD.h>
 #include <iostream>
 
 using namespace zinx;
@@ -11,10 +13,10 @@ using namespace zinx;
 ZinxServer::ZinxServer(const muduo::InetAddr& addr, const std::string& name) 
     : tcpServer_(&loop_, addr, name)
     , router_(std::make_unique<ZinxRouter>())
-    , pp_(std::make_unique<ZinxPacketProcessor>())
+    , pp_(std::make_unique<ZinxPacketProcessor_LTD>())
 {
     assert(dynamic_cast<ZinxRouter*>(router_.get()) != nullptr);
-    assert(dynamic_cast<ZinxPacketProcessor*>(pp_.get()) != nullptr);
+    assert(dynamic_cast<ZinxPacketProcessor_LTD*>(pp_.get()) != nullptr);
 
     tcpServer_.SetIoThreadNum(static_cast<int>(GlobalConfig::io_thread_num));
 
@@ -44,14 +46,14 @@ void ZinxServer::HandleOnMessage(const muduo::TcpConnectionPtr& conn, muduo::Buf
     ///     1. resolve message
     ///     2. wrap RequestContext 
     ///     3. start routing  
-    zinx::ZinxPacket current_packet;
+    zinx::ZinxPacket_LTD current_packet;
     bool unpack_success = pp_->Unpcak(buf, &current_packet);
     if (!unpack_success) {
         // wait whole message
         return;
     }
 
-    RequestContext request_context(conn, std::make_shared<ZinxPacket>(current_packet));
+    RequestContext request_context(conn, std::make_shared<ZinxPacket_LTD>(current_packet));
     
     /* route the request and handle */
     router_->RouteAndHandle(request_context);

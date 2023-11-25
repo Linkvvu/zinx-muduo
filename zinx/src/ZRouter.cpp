@@ -1,15 +1,16 @@
 #include <muduo/base/Logging.h>
 #include <zinx/inc/ZConfig.h>
 #include <zinx/inc/ZRouter.h>
-#include <zinx/inc/ZPacket.h>
+// #include <zinx/inc/ZPacket.h>
+#include <zinx/inc/ZPacket_LTD.h>
 
 using namespace zinx;
 
 void ZinxRouter::RouteAndHandle(RequestContext& req) const {
-    assert(dynamic_cast<const ZinxPacket*>(req.GetPacket()) != nullptr);
+    assert(dynamic_cast<const ZinxPacket_LTD*>(req.GetPacket()) != nullptr);
 
     /// FIXME: use dynamic_cast for the safe down-cast
-    const ZinxPacket* z_packet = static_cast<const ZinxPacket*>(req.GetPacket());
+    const ZinxPacket_LTD* z_packet = static_cast<const ZinxPacket_LTD*>(req.GetPacket());
     auto it = mapper_.find(z_packet->GetId());
     if (it == mapper_.end()) {
         LOG_WARN << "Doesn`t find a available handler for request from [" << req.GetConnection()->GetRemoteAddr().GetIpPort()
