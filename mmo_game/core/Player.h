@@ -1,5 +1,5 @@
-#if !defined(MMO_PLAYER_H)
-#define MMO_PLAYER_H
+#if !defined(MMO_CORE_PLAYER_H)
+#define MMO_CORE_PLAYER_H
 #include <google/protobuf/message.h>
 #include <zinx/inc/ZConnection.h>
 #include <zinx/inc/NonCopyable.h>
@@ -27,9 +27,21 @@ public:
     int32_t GetPid() const 
     { return pid_; }
 
+    const Position& GetPosition() const
+    { return pos_; }
+
+    Position& GetPosition()
+    { return pos_; }
+
     void SyncPid();
 
     void BroadcastInitialPos();
+
+    /// implement comparison predicate to adapt the container std::unorder_set
+    /// check by muduo::TcpConnection instance 
+    bool operator==(const Player& param) const {
+        return conn_ == param.conn_;
+    }
     
 private:
     void SendMsgWithProtobuf(uint32_t id, google::protobuf::Message* msg);    
@@ -42,5 +54,17 @@ private:
 
 } // namespace mmo 
 
+/// 通过hash value实现O(1)时间复杂度的查找，
+/// 但在哈希碰撞（即两个不同的元素有相同的哈希值）的情况下，它还需要使用operator==来确保两个元素是否真正相等。
+/// overload hash function，to calculate hash value of mmo::Player instance
+namespace std {
+    template <>
+    struct hash<mmo::Player> {
+        size_t operator()(const mmo::Player& player) const {
+            /* calculate hash value by player`s pid */ 
+            return hash<int32_t>()(player.GetPid());
+        }
+    };
+}
 
-#endif // MMO_PLAYER_H
+#endif // MMO_CORE_PLAYER_H
