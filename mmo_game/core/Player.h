@@ -14,7 +14,8 @@ struct Position
     float Z;    // width
     float V;    // angle
 };
-class Player;   // forward declaration
+class Player;       // forward declaration
+class WorldManager; // forward declaration
 
 /// Factory method
 std::shared_ptr<Player> CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos);
@@ -35,7 +36,10 @@ public:
 
     void SyncPid();
 
-    void BroadcastInitialPos();
+    /// 将自身位置广播至所有玩家客户端(包括自己)
+    /// 将周围玩家信息同步到当前玩家客户端
+    void SyncWithSurrounding(const mmo::WorldManager& wm);
+    
 
     /// implement comparison predicate to adapt the container std::unorder_set
     /// check by muduo::TcpConnection instance 

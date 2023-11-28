@@ -17,5 +17,5 @@ void Grid::RemovePlayer(int32_t pid) {
 
 /// time complexity: O(N) 
 std::vector<int32_t> Grid::GetAllPlayers() const {
-    
+    return std::vector<int32_t>(players_.begin(), players_.end());
 }

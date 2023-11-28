@@ -3,12 +3,27 @@
 #include <mmo_game/api/msg.pb.h>
 #include <mmo_game/api/msg_id.h>
 #include <mmo_game/core/Player.h>
+#include <mmo_game/core/WorldManager.h>
+#include <vector>
 #include <atomic>
 
 using namespace mmo;
 
 /// use atomic type to avoid race-condition
-static std::atomic_int32_t global_id(std::numeric_limits<int32_t>::min());
+// static std::atomic_int32_t global_id(std::numeric_limits<int32_t>::min());
+static std::atomic_int32_t global_id(1);
+
+namespace mmo {
+
+static void SetPosition(mmo::pb::Position* target, const mmo::Position& pos) {
+    assert(target != nullptr);
+    target->set_x(pos.X);
+    target->set_y(pos.Y);
+    target->set_z(pos.Z);
+    target->set_v(pos.V);
+}
+
+} // namespace mmo 
 
 Player::Player(int32_t pid, const zinx::ZinxConnectionPtr& conn, const Position& pos)
     : pid_(pid)
@@ -36,16 +51,35 @@ void Player::SyncPid() {
 }
 
 
-void mmo::Player::BroadcastInitialPos() {
-    mmo::pb::BroadCast broadcast_packet;
-    broadcast_packet.set_tp(BroadCast_Positioni);
-    broadcast_packet.set_pid(pid_);
+void Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
+    /* get surrounding all players */
+    std::vector<int32_t> pids = wm.GetAoiManager().GetSurroundingPlayersByPid(pid_, pos_);
+    std::vector<Player*> players;
+    players.reserve(pids.size());
+    for (int32_t pid : pids) {
+        players.emplace_back(wm.GetPlayerByPid(pid));
+    }
 
-    broadcast_packet.mutable_p()->set_x(pos_.X);
-    broadcast_packet.mutable_p()->set_y(pos_.Y);
-    broadcast_packet.mutable_p()->set_z(pos_.Z);
-    broadcast_packet.mutable_p()->set_v(pos_.V);
-    SendMsgWithProtobuf(BroadCast_Protocol_ID, &broadcast_packet);
+    mmo::pb::BroadCast broadcast_packet;
+    broadcast_packet.set_pid(pid_);
+    broadcast_packet.set_tp(BroadCast_Position);
+    mmo::SetPosition(broadcast_packet.mutable_p(), pos_);
+
+    std::vector<mmo::pb::Player> player_info_packets(players.size(), mmo::pb::Player());
+
+    for (size_t i = 0; i < players.size(); i++) {
+        Player* cur_player = players[i];
+        /* pack a position-packet to broadcast to all surrounding players */
+        cur_player->SendMsgWithProtobuf(BroadCast_Protocol_ID, &broadcast_packet);
+        /* pack a surrounding player`s info-packet to send to current player so that sync info */
+        player_info_packets[i].set_pid(cur_player->GetPid());
+        mmo::SetPosition(player_info_packets[i].mutable_p(), cur_player->GetPosition());
+    }
+
+    /* tell current client that surrorunding players info(pid, position...) */
+    mmo::pb::SyncPlayers sync_players_packet;
+    sync_players_packet.mutable_ps()->Add(player_info_packets.begin(), player_info_packets.end());
+    SendMsgWithProtobuf(Sync_Player_Protocol_ID, &sync_players_packet);
 }
 
 std::shared_ptr<Player> mmo::CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos) {

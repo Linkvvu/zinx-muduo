@@ -21,12 +21,21 @@ public:
     void AddPlayer(std::shared_ptr<Player>&& player);
     void RemovePlayerByPid(int32_t pid);
     
+    Player* GetPlayerByPid(int32_t pid) const {
+        std::shared_lock<std::shared_mutex> guard(rw_mutex_);
+        assert(players_.find(pid) != players_.end());
+        return players_.at(pid).get();
+    }
+
+    const AOI_Manager& GetAoiManager() const
+    { return aoiManager_; }
+
 private:
     /* AOI  module */
     AOI_Manager aoiManager_;
     /// The players in the current world
     std::unordered_map<int32_t, std::shared_ptr<Player>> players_ {};
-    std::shared_mutex rw_mutex_ {};
+    mutable std::shared_mutex rw_mutex_ {};
 };
 
 } // namespace mmo 

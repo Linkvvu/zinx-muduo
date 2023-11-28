@@ -65,6 +65,26 @@ struct PositionDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PositionDefaultTypeInternal _Position_default_instance_;
 
+inline constexpr Player::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : _cached_size_{0},
+        p_{nullptr},
+        pid_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Player::Player(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct PlayerDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PlayerDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PlayerDefaultTypeInternal() {}
+  union {
+    Player _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PlayerDefaultTypeInternal _Player_default_instance_;
+
 inline constexpr BroadCast::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : pid_{0},
@@ -86,9 +106,28 @@ struct BroadCastDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BroadCastDefaultTypeInternal _BroadCast_default_instance_;
+
+inline constexpr SyncPlayers::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : ps_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR SyncPlayers::SyncPlayers(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct SyncPlayersDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR SyncPlayersDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~SyncPlayersDefaultTypeInternal() {}
+  union {
+    SyncPlayers _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SyncPlayersDefaultTypeInternal _SyncPlayers_default_instance_;
 }  // namespace pb
 }  // namespace mmo
-static ::_pb::Metadata file_level_metadata_msg_2eproto[3];
+static ::_pb::Metadata file_level_metadata_msg_2eproto[5];
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_msg_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -131,6 +170,27 @@ const ::uint32_t
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         PROTOBUF_FIELD_OFFSET(::mmo::pb::BroadCast, _impl_.Data_),
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::Player, _impl_._has_bits_),
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::Player, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::Player, _impl_.pid_),
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::Player, _impl_.p_),
+        ~0u,
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::SyncPlayers, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::SyncPlayers, _impl_.ps_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -138,12 +198,16 @@ static const ::_pbi::MigrationSchema
         {0, -1, -1, sizeof(::mmo::pb::SyncPid)},
         {9, -1, -1, sizeof(::mmo::pb::Position)},
         {21, -1, -1, sizeof(::mmo::pb::BroadCast)},
+        {35, 45, -1, sizeof(::mmo::pb::Player)},
+        {47, -1, -1, sizeof(::mmo::pb::SyncPlayers)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
     &::mmo::pb::_SyncPid_default_instance_._instance,
     &::mmo::pb::_Position_default_instance_._instance,
     &::mmo::pb::_BroadCast_default_instance_._instance,
+    &::mmo::pb::_Player_default_instance_._instance,
+    &::mmo::pb::_SyncPlayers_default_instance_._instance,
 };
 const char descriptor_table_protodef_msg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -152,18 +216,21 @@ const char descriptor_table_protodef_msg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIAB
     "\001Z\030\003 \001(\002\022\t\n\001V\030\004 \001(\002\"t\n\tBroadCast\022\013\n\003Pid\030"
     "\001 \001(\005\022\n\n\002Tp\030\002 \001(\005\022\021\n\007Content\030\003 \001(\tH\000\022\035\n\001"
     "P\030\004 \001(\0132\020.mmo.pb.PositionH\000\022\024\n\nActionDat"
-    "a\030\005 \001(\005H\000B\006\n\004DataB\005\252\002\002Pbb\006proto3"
+    "a\030\005 \001(\005H\000B\006\n\004Data\"2\n\006Player\022\013\n\003Pid\030\001 \001(\005"
+    "\022\033\n\001P\030\002 \001(\0132\020.mmo.pb.Position\")\n\013SyncPla"
+    "yers\022\032\n\002ps\030\001 \003(\0132\016.mmo.pb.PlayerB\005\252\002\002Pbb"
+    "\006proto3"
 };
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::DescriptorTable
     descriptor_table_msg_2eproto = {
         false,
-        232,
+        327,
         descriptor_table_protodef_msg_2eproto,
         "msg.proto",
         nullptr,
         0,
-        3,
+        5,
         schemas,
         file_default_instances,
         TableStruct_msg_2eproto::offsets,
@@ -1027,6 +1094,438 @@ void BroadCast::InternalSwap(BroadCast* PROTOBUF_RESTRICT other) {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_msg_2eproto_getter, &descriptor_table_msg_2eproto.once,
       file_level_metadata_msg_2eproto[2]);
+}
+// ===================================================================
+
+class Player::_Internal {
+ public:
+  using HasBits = decltype(std::declval<Player>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(Player, _impl_._has_bits_);
+};
+
+Player::Player(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mmo.pb.Player)
+}
+inline PROTOBUF_NDEBUG_INLINE Player::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0} {}
+
+Player::Player(
+    ::google::protobuf::Arena* arena,
+    const Player& from)
+    : ::google::protobuf::Message(arena) {
+  Player* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.p_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::mmo::pb::Position>(
+                              arena, *from._impl_.p_)
+                        : nullptr;
+  _impl_.pid_ = from._impl_.pid_;
+
+  // @@protoc_insertion_point(copy_constructor:mmo.pb.Player)
+}
+inline PROTOBUF_NDEBUG_INLINE Player::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : _cached_size_{0} {}
+
+inline void Player::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, p_),
+           0,
+           offsetof(Impl_, pid_) -
+               offsetof(Impl_, p_) +
+               sizeof(Impl_::pid_));
+}
+Player::~Player() {
+  // @@protoc_insertion_point(destructor:mmo.pb.Player)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void Player::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.p_;
+  _impl_.~Impl_();
+}
+
+const ::google::protobuf::MessageLite::ClassData*
+Player::GetClassData() const {
+  PROTOBUF_CONSTINIT static const ::google::protobuf::MessageLite::ClassData
+      _data_ = {
+          Player::MergeImpl,
+           nullptr,  // OnDemandRegisterArenaDtor
+           &::google::protobuf::Message::kDescriptorMethods,
+              PROTOBUF_FIELD_OFFSET(Player, _impl_._cached_size_),
+      };
+  return &_data_;
+}
+PROTOBUF_NOINLINE void Player::Clear() {
+// @@protoc_insertion_point(message_clear_start:mmo.pb.Player)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.p_ != nullptr);
+    _impl_.p_->Clear();
+  }
+  _impl_.pid_ = 0;
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* Player::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 2, 1, 0, 2> Player::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(Player, _impl_._has_bits_),
+    0, // no _extensions_
+    2, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_Player_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mmo::pb::Player>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // .mmo.pb.Position P = 2;
+    {::_pbi::TcParser::FastMtS1,
+     {18, 0, 0, PROTOBUF_FIELD_OFFSET(Player, _impl_.p_)}},
+    // int32 Pid = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(Player, _impl_.pid_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(Player, _impl_.pid_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 Pid = 1;
+    {PROTOBUF_FIELD_OFFSET(Player, _impl_.pid_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // .mmo.pb.Position P = 2;
+    {PROTOBUF_FIELD_OFFSET(Player, _impl_.p_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mmo::pb::Position>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* Player::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mmo.pb.Player)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // int32 Pid = 1;
+  if (this->_internal_pid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::
+        WriteInt32ToArrayWithField<1>(
+            stream, this->_internal_pid(), target);
+  }
+
+  cached_has_bits = _impl_._has_bits_[0];
+  // .mmo.pb.Position P = 2;
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+        2, *_impl_.p_, _impl_.p_->GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mmo.pb.Player)
+  return target;
+}
+
+::size_t Player::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mmo.pb.Player)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // .mmo.pb.Position P = 2;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size +=
+        1 + ::google::protobuf::internal::WireFormatLite::MessageSize(*_impl_.p_);
+  }
+
+  // int32 Pid = 1;
+  if (this->_internal_pid() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+        this->_internal_pid());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+
+void Player::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Player*>(&to_msg);
+  auto& from = static_cast<const Player&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:mmo.pb.Player)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.p_ != nullptr);
+    if (_this->_impl_.p_ == nullptr) {
+      _this->_impl_.p_ =
+          ::google::protobuf::Message::CopyConstruct<::mmo::pb::Position>(arena, *from._impl_.p_);
+    } else {
+      _this->_impl_.p_->MergeFrom(*from._impl_.p_);
+    }
+  }
+  if (from._internal_pid() != 0) {
+    _this->_internal_set_pid(from._internal_pid());
+  }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Player::CopyFrom(const Player& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mmo.pb.Player)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool Player::IsInitialized() const {
+  return true;
+}
+
+void Player::InternalSwap(Player* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Player, _impl_.pid_)
+      + sizeof(Player::_impl_.pid_)
+      - PROTOBUF_FIELD_OFFSET(Player, _impl_.p_)>(
+          reinterpret_cast<char*>(&_impl_.p_),
+          reinterpret_cast<char*>(&other->_impl_.p_));
+}
+
+::google::protobuf::Metadata Player::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_msg_2eproto_getter, &descriptor_table_msg_2eproto.once,
+      file_level_metadata_msg_2eproto[3]);
+}
+// ===================================================================
+
+class SyncPlayers::_Internal {
+ public:
+};
+
+SyncPlayers::SyncPlayers(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mmo.pb.SyncPlayers)
+}
+inline PROTOBUF_NDEBUG_INLINE SyncPlayers::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : ps_{visibility, arena, from.ps_},
+        _cached_size_{0} {}
+
+SyncPlayers::SyncPlayers(
+    ::google::protobuf::Arena* arena,
+    const SyncPlayers& from)
+    : ::google::protobuf::Message(arena) {
+  SyncPlayers* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
+  // @@protoc_insertion_point(copy_constructor:mmo.pb.SyncPlayers)
+}
+inline PROTOBUF_NDEBUG_INLINE SyncPlayers::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : ps_{visibility, arena},
+        _cached_size_{0} {}
+
+inline void SyncPlayers::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+SyncPlayers::~SyncPlayers() {
+  // @@protoc_insertion_point(destructor:mmo.pb.SyncPlayers)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void SyncPlayers::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.~Impl_();
+}
+
+const ::google::protobuf::MessageLite::ClassData*
+SyncPlayers::GetClassData() const {
+  PROTOBUF_CONSTINIT static const ::google::protobuf::MessageLite::ClassData
+      _data_ = {
+          SyncPlayers::MergeImpl,
+           nullptr,  // OnDemandRegisterArenaDtor
+           &::google::protobuf::Message::kDescriptorMethods,
+              PROTOBUF_FIELD_OFFSET(SyncPlayers, _impl_._cached_size_),
+      };
+  return &_data_;
+}
+PROTOBUF_NOINLINE void SyncPlayers::Clear() {
+// @@protoc_insertion_point(message_clear_start:mmo.pb.SyncPlayers)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.ps_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* SyncPlayers::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> SyncPlayers::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_SyncPlayers_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mmo::pb::SyncPlayers>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // repeated .mmo.pb.Player ps = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(SyncPlayers, _impl_.ps_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // repeated .mmo.pb.Player ps = 1;
+    {PROTOBUF_FIELD_OFFSET(SyncPlayers, _impl_.ps_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::mmo::pb::Player>()},
+  }}, {{
+  }},
+};
+
+::uint8_t* SyncPlayers::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mmo.pb.SyncPlayers)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // repeated .mmo.pb.Player ps = 1;
+  for (unsigned i = 0,
+      n = static_cast<unsigned>(this->_internal_ps_size()); i < n; i++) {
+    const auto& repfield = this->_internal_ps().Get(i);
+    target = ::google::protobuf::internal::WireFormatLite::
+        InternalWriteMessage(1, repfield, repfield.GetCachedSize(), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mmo.pb.SyncPlayers)
+  return target;
+}
+
+::size_t SyncPlayers::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mmo.pb.SyncPlayers)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // repeated .mmo.pb.Player ps = 1;
+  total_size += 1UL * this->_internal_ps_size();
+  for (const auto& msg : this->_internal_ps()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+  }
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+
+void SyncPlayers::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<SyncPlayers*>(&to_msg);
+  auto& from = static_cast<const SyncPlayers&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mmo.pb.SyncPlayers)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_ps()->MergeFrom(
+      from._internal_ps());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void SyncPlayers::CopyFrom(const SyncPlayers& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mmo.pb.SyncPlayers)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool SyncPlayers::IsInitialized() const {
+  return true;
+}
+
+void SyncPlayers::InternalSwap(SyncPlayers* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.ps_.InternalSwap(&other->_impl_.ps_);
+}
+
+::google::protobuf::Metadata SyncPlayers::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_msg_2eproto_getter, &descriptor_table_msg_2eproto.once,
+      file_level_metadata_msg_2eproto[4]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace pb

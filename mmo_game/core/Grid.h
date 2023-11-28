@@ -19,6 +19,10 @@ public:
     void AddNewPlayer(int32_t pid);
     void RemovePlayer(int32_t pid);
     
+    /// for debug 
+    bool HasPlayerByPid(int32_t pid) const
+    { return players_.find(pid) != players_.end(); }
+    
 private:
     std::unordered_set<int32_t> players_;   // all players who in the grid 
     

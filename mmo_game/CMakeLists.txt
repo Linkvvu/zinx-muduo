@@ -1,4 +1,4 @@
-file(GLOB MMO_SOURCES "core/*.cpp" "api/*.cc" "api/*.cpp" "./*cpp")
+file(GLOB MMO_SOURCES "core/*.cpp" "api/*.cc" "api/*.cpp" "handler/*.cpp" "./*cpp")
 
 find_library(MuduoNet_LIBRARY muduo HINTS ${MuduoNet_LIBRARY_PATH} REQUIRED)
 

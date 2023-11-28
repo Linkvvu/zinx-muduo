@@ -5,7 +5,7 @@
 
 mmo::Position getRandomPoistion() {
     std::default_random_engine rand_engine;
-    std::uniform_real_distribution<float> random(0.0, 50.0);
+    std::uniform_real_distribution<float> random(0.0, 9.0);
     rand_engine.seed(time(nullptr));
 
     return mmo::Position {
@@ -26,7 +26,7 @@ void initPlayer(const zinx::ZinxConnectionPtr& conn) {
     /* notify PID to current client */
     p->SyncPid();
 
-    p->BroadcastInitialPos();
+    p->SyncWithSurrounding(*mmo::GlobalWorldManager.get());
 }
 
 void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {

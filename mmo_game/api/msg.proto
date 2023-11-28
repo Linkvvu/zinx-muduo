@@ -15,7 +15,7 @@ message Position {
 	float V = 4;
 }
 
-// 向Client发送，以广播数据至所有Client
+// 广播至所有客户端(包括自己)
 message BroadCast {
 	int32 Pid = 1;
 	int32 Tp = 2;
@@ -24,4 +24,14 @@ message BroadCast {
         Position P = 4;
 		int32 ActionData = 5;
 	}
+}
+
+message Player {
+	int32 Pid = 1;
+	Position P = 2;
+}
+
+// 同步当前格子中的所有玩家至客户端
+message SyncPlayers {
+	repeated Player ps = 1;
 }
