@@ -45,6 +45,8 @@ public:
     /// notify surrounding players that the current connection is offline
     void Offline(const mmo::WorldManager& wm);
     
+    void UpdatePosition(const Position& pos, const WorldManager& wm);
+
     /// implement comparison predicate to adapt the container std::unorder_set
     /// check by muduo::TcpConnection instance 
     bool operator==(const Player& param) const {

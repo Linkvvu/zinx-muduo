@@ -5,7 +5,7 @@ using namespace mmo;
 
 
 std::unique_ptr<WorldManager> mmo::GlobalWorldManager = std::make_unique<WorldManager>(
-    500.0F, 500.0F, 10.0F
+    50000.0F, 50000.0F, 1000.0F
 );
 
 void WorldManager::AddPlayer(const std::shared_ptr<Player>& player) {

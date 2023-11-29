@@ -111,6 +111,20 @@ void Player::Offline(const mmo::WorldManager& wm) {
     }
 }
 
+void Player::UpdatePosition(const Position& pos, const WorldManager& wm) {
+    pos_ = pos;
+
+    mmo::pb::BroadCast broadcast_packet;
+    broadcast_packet.set_pid(pid_);
+    broadcast_packet.set_tp(BroadCast_UpdatePos);
+    SetPosition(broadcast_packet.mutable_p(), pos);
+    
+    std::vector<Player*> surrounding_players = GetSurroundingPlayers(wm);
+    for (Player* p : surrounding_players) {
+        p->SendMsgWithProtobuf(BroadCast_Protocol_ID, &broadcast_packet);
+    }
+}
+
 std::shared_ptr<Player> mmo::CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos) {
     std::shared_ptr<Player> p;
     p.reset(new Player(global_id++, conn, pos));

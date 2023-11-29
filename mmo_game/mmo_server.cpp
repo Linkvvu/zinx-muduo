@@ -1,10 +1,12 @@
 #include <zinx/inc/ZServer.h>
 #include <mmo_game/handler/WorldChatHandler.h>
+#include <mmo_game/handler/MoveHandler.h>
 #include <mmo_game/core/WorldManager.h>
 #include <mmo_game/core/Player.h>
 #include <random>
 
-#define HANDLER_WORLD_CHAT_ID 2
+#define HANDLER_WORLD_CHAT_ID   2
+#define HANDLER_MOVE_ID         3
 
 mmo::Position getRandomPoistion() {
     std::default_random_engine rand_engine;
@@ -62,5 +64,6 @@ int main() {
     server->SetOnConnStart(&initPlayer);
     server->SetOnConnClose(&destroyPlayer);
     server->AddHandler(HANDLER_WORLD_CHAT_ID, std::make_unique<mmo::WorldChatHandler>());
+    server->AddHandler(HANDLER_MOVE_ID, std::make_unique<mmo::MoveHandler>());
     server->ListenAndServe();
 }

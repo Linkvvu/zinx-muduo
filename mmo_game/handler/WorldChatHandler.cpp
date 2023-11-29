@@ -10,13 +10,14 @@ void WorldChatHandler::Handle(zinx::RequestContext& req) {
         pid = std::any_cast<int32_t>(req.GetConnection()->GetContext());
     } catch(const std::bad_any_cast& e) {
         std::cerr << e.what() << '\n';
+        return;
     }
 
     mmo::Player* cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid);
     mmo::pb::Talk talk_packet;
     bool parse_ok = talk_packet.ParseFromString(req.GetPacket()->GetPayload());
     if (!parse_ok) {
-        std::cerr << "Failed to parse protobuf in player " << pid << std::endl;
+        std::cerr << "WorldChatHandler::Handle Failed to parse protobuf in player " << pid << std::endl;
         return;
     }
 
