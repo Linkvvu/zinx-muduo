@@ -82,6 +82,18 @@ void Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
     SendMsgWithProtobuf(Sync_Player_Protocol_ID, &sync_players_packet);
 }
 
+void Player::WorldChat(const std::string& content, const mmo::WorldManager& wm) {
+    mmo::pb::BroadCast broadcast_packet;    
+    broadcast_packet.set_pid(pid_);
+    broadcast_packet.set_tp(BroadCast_World_Talk);
+    broadcast_packet.set_content(content);
+
+    std::vector<Player*> all_players = wm.GetAllPlayers();
+    for (Player* p : all_players) {
+        p->SendMsgWithProtobuf(BroadCast_Protocol_ID, &broadcast_packet);
+    }
+}
+
 std::shared_ptr<Player> mmo::CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos) {
     std::shared_ptr<Player> p;
     p.reset(new Player(global_id++, conn, pos));

@@ -35,3 +35,7 @@ message Player {
 message SyncPlayers {
 	repeated Player ps = 1;
 }
+
+message Talk {
+	string Content=1;    // 聊天内容
+}

@@ -30,6 +30,8 @@ public:
     const AOI_Manager& GetAoiManager() const
     { return aoiManager_; }
 
+    const std::vector<Player*> GetAllPlayers() const;
+
 private:
     /* AOI  module */
     AOI_Manager aoiManager_;

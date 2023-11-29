@@ -40,6 +40,7 @@ public:
     /// 将周围玩家信息同步到当前玩家客户端
     void SyncWithSurrounding(const mmo::WorldManager& wm);
     
+    void WorldChat(const std::string& content, const mmo::WorldManager& wm);
 
     /// implement comparison predicate to adapt the container std::unorder_set
     /// check by muduo::TcpConnection instance 

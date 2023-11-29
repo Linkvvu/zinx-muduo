@@ -1,5 +1,6 @@
 #include <mmo_game/core/WorldManager.h>
 #include <mutex>    // for unique_lock
+#include "WorldManager.h"
 using namespace mmo;
 
 
@@ -40,4 +41,15 @@ void WorldManager::RemovePlayerByPid(int32_t pid) {
     std::unique_lock<std::shared_mutex> guard(rw_mutex_);
     size_t ret = players_.erase(pid);
     assert(ret == 1);
+}
+
+const std::vector<Player*> WorldManager::GetAllPlayers() const {
+    std::shared_lock<std::shared_mutex> guard(rw_mutex_);
+    
+    std::vector<Player*> all_players;
+    all_players.reserve(players_.size());
+    for (const auto& pair : players_) {
+        all_players.push_back(pair.second.get());
+    }
+    return all_players;
 }

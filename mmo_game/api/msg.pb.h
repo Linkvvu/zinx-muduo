@@ -66,6 +66,9 @@ extern SyncPidDefaultTypeInternal _SyncPid_default_instance_;
 class SyncPlayers;
 struct SyncPlayersDefaultTypeInternal;
 extern SyncPlayersDefaultTypeInternal _SyncPlayers_default_instance_;
+class Talk;
+struct TalkDefaultTypeInternal;
+extern TalkDefaultTypeInternal _Talk_default_instance_;
 }  // namespace pb
 }  // namespace mmo
 namespace google {
@@ -79,6 +82,179 @@ namespace pb {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class Talk final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:mmo.pb.Talk) */ {
+ public:
+  inline Talk() : Talk(nullptr) {}
+  ~Talk() override;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR Talk(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline Talk(const Talk& from) : Talk(nullptr, from) {}
+  inline Talk(Talk&& from) noexcept
+      : Talk(nullptr, std::move(from)) {}
+  inline Talk& operator=(const Talk& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline Talk& operator=(Talk&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const Talk& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const Talk* internal_default_instance() {
+    return reinterpret_cast<const Talk*>(
+        &_Talk_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 5;
+  friend void swap(Talk& a, Talk& b) { a.Swap(&b); }
+  inline void Swap(Talk* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(Talk* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  Talk* New(::google::protobuf::Arena* arena = nullptr) const final {
+    return ::google::protobuf::Message::DefaultConstruct<Talk>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const Talk& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const Talk& from) { Talk::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  ::size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::google::protobuf::internal::ParseContext* ctx) final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(Talk* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "mmo.pb.Talk"; }
+
+ protected:
+  explicit Talk(::google::protobuf::Arena* arena);
+  Talk(::google::protobuf::Arena* arena, const Talk& from);
+  Talk(::google::protobuf::Arena* arena, Talk&& from) noexcept
+      : Talk(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::MessageLite::ClassData* GetClassData()
+      const final;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const final;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kContentFieldNumber = 1,
+  };
+  // string Content = 1;
+  void clear_content() ;
+  const std::string& content() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_content(Arg_&& arg, Args_... args);
+  std::string* mutable_content();
+  PROTOBUF_NODISCARD std::string* release_content();
+  void set_allocated_content(std::string* value);
+
+  private:
+  const std::string& _internal_content() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_content(
+      const std::string& value);
+  std::string* _internal_mutable_content();
+
+  public:
+  // @@protoc_insertion_point(class_scope:mmo.pb.Talk)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      0, 1, 0,
+      27, 2>
+      _table_;
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from);
+    ::google::protobuf::internal::ArenaStringPtr content_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_msg_2eproto;
+};
 // -------------------------------------------------------------------
 
 class SyncPid final : public ::google::protobuf::Message
@@ -1618,6 +1794,60 @@ inline ::google::protobuf::RepeatedPtrField<::mmo::pb::Player>*
 SyncPlayers::_internal_mutable_ps() {
   PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
   return &_impl_.ps_;
+}
+
+// -------------------------------------------------------------------
+
+// Talk
+
+// string Content = 1;
+inline void Talk::clear_content() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.content_.ClearToEmpty();
+}
+inline const std::string& Talk::content() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:mmo.pb.Talk.Content)
+  return _internal_content();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void Talk::set_content(Arg_&& arg,
+                                                     Args_... args) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.content_.Set(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:mmo.pb.Talk.Content)
+}
+inline std::string* Talk::mutable_content() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_content();
+  // @@protoc_insertion_point(field_mutable:mmo.pb.Talk.Content)
+  return _s;
+}
+inline const std::string& Talk::_internal_content() const {
+  PROTOBUF_TSAN_READ(&_impl_._tsan_detect_race);
+  return _impl_.content_.Get();
+}
+inline void Talk::_internal_set_content(const std::string& value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.content_.Set(value, GetArena());
+}
+inline std::string* Talk::_internal_mutable_content() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  return _impl_.content_.Mutable( GetArena());
+}
+inline std::string* Talk::release_content() {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  // @@protoc_insertion_point(field_release:mmo.pb.Talk.Content)
+  return _impl_.content_.Release();
+}
+inline void Talk::set_allocated_content(std::string* value) {
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  _impl_.content_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.content_.IsDefault()) {
+          _impl_.content_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:mmo.pb.Talk.Content)
 }
 
 #ifdef __GNUC__

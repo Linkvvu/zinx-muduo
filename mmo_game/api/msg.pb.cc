@@ -24,6 +24,27 @@ namespace _fl = ::google::protobuf::internal::field_layout;
 namespace mmo {
 namespace pb {
 
+inline constexpr Talk::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : content_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR Talk::Talk(::_pbi::ConstantInitialized)
+    : _impl_(::_pbi::ConstantInitialized()) {}
+struct TalkDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR TalkDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~TalkDefaultTypeInternal() {}
+  union {
+    Talk _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TalkDefaultTypeInternal _Talk_default_instance_;
+
 inline constexpr SyncPid::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : pid_{0},
@@ -127,7 +148,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SyncPlayersDefaultTypeInternal _SyncPlayers_default_instance_;
 }  // namespace pb
 }  // namespace mmo
-static ::_pb::Metadata file_level_metadata_msg_2eproto[5];
+static ::_pb::Metadata file_level_metadata_msg_2eproto[6];
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_msg_2eproto = nullptr;
 static constexpr const ::_pb::ServiceDescriptor**
@@ -191,6 +212,15 @@ const ::uint32_t
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         PROTOBUF_FIELD_OFFSET(::mmo::pb::SyncPlayers, _impl_.ps_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::Talk, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::mmo::pb::Talk, _impl_.content_),
 };
 
 static const ::_pbi::MigrationSchema
@@ -200,6 +230,7 @@ static const ::_pbi::MigrationSchema
         {21, -1, -1, sizeof(::mmo::pb::BroadCast)},
         {35, 45, -1, sizeof(::mmo::pb::Player)},
         {47, -1, -1, sizeof(::mmo::pb::SyncPlayers)},
+        {56, -1, -1, sizeof(::mmo::pb::Talk)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -208,6 +239,7 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::mmo::pb::_BroadCast_default_instance_._instance,
     &::mmo::pb::_Player_default_instance_._instance,
     &::mmo::pb::_SyncPlayers_default_instance_._instance,
+    &::mmo::pb::_Talk_default_instance_._instance,
 };
 const char descriptor_table_protodef_msg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
@@ -218,19 +250,19 @@ const char descriptor_table_protodef_msg_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIAB
     "P\030\004 \001(\0132\020.mmo.pb.PositionH\000\022\024\n\nActionDat"
     "a\030\005 \001(\005H\000B\006\n\004Data\"2\n\006Player\022\013\n\003Pid\030\001 \001(\005"
     "\022\033\n\001P\030\002 \001(\0132\020.mmo.pb.Position\")\n\013SyncPla"
-    "yers\022\032\n\002ps\030\001 \003(\0132\016.mmo.pb.PlayerB\005\252\002\002Pbb"
-    "\006proto3"
+    "yers\022\032\n\002ps\030\001 \003(\0132\016.mmo.pb.Player\"\027\n\004Talk"
+    "\022\017\n\007Content\030\001 \001(\tB\005\252\002\002Pbb\006proto3"
 };
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 const ::_pbi::DescriptorTable
     descriptor_table_msg_2eproto = {
         false,
-        327,
+        352,
         descriptor_table_protodef_msg_2eproto,
         "msg.proto",
         nullptr,
         0,
-        5,
+        6,
         schemas,
         file_default_instances,
         TableStruct_msg_2eproto::offsets,
@@ -1526,6 +1558,200 @@ void SyncPlayers::InternalSwap(SyncPlayers* PROTOBUF_RESTRICT other) {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_msg_2eproto_getter, &descriptor_table_msg_2eproto.once,
       file_level_metadata_msg_2eproto[4]);
+}
+// ===================================================================
+
+class Talk::_Internal {
+ public:
+};
+
+Talk::Talk(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:mmo.pb.Talk)
+}
+inline PROTOBUF_NDEBUG_INLINE Talk::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from)
+      : content_(arena, from.content_),
+        _cached_size_{0} {}
+
+Talk::Talk(
+    ::google::protobuf::Arena* arena,
+    const Talk& from)
+    : ::google::protobuf::Message(arena) {
+  Talk* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_);
+
+  // @@protoc_insertion_point(copy_constructor:mmo.pb.Talk)
+}
+inline PROTOBUF_NDEBUG_INLINE Talk::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : content_(arena),
+        _cached_size_{0} {}
+
+inline void Talk::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+Talk::~Talk() {
+  // @@protoc_insertion_point(destructor:mmo.pb.Talk)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void Talk::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.content_.Destroy();
+  _impl_.~Impl_();
+}
+
+const ::google::protobuf::MessageLite::ClassData*
+Talk::GetClassData() const {
+  PROTOBUF_CONSTINIT static const ::google::protobuf::MessageLite::ClassData
+      _data_ = {
+          Talk::MergeImpl,
+           nullptr,  // OnDemandRegisterArenaDtor
+           &::google::protobuf::Message::kDescriptorMethods,
+              PROTOBUF_FIELD_OFFSET(Talk, _impl_._cached_size_),
+      };
+  return &_data_;
+}
+PROTOBUF_NOINLINE void Talk::Clear() {
+// @@protoc_insertion_point(message_clear_start:mmo.pb.Talk)
+  PROTOBUF_TSAN_WRITE(&_impl_._tsan_detect_race);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.content_.ClearToEmpty();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+const char* Talk::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
+  return ptr;
+}
+
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 1, 0, 27, 2> Talk::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    1, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967294,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    1,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    &_Talk_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::mmo::pb::Talk>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // string Content = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(Talk, _impl_.content_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string Content = 1;
+    {PROTOBUF_FIELD_OFFSET(Talk, _impl_.content_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\13\7\0\0\0\0\0\0"
+    "mmo.pb.Talk"
+    "Content"
+  }},
+};
+
+::uint8_t* Talk::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:mmo.pb.Talk)
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
+
+  // string Content = 1;
+  if (!this->_internal_content().empty()) {
+    const std::string& _s = this->_internal_content();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "mmo.pb.Talk.Content");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:mmo.pb.Talk)
+  return target;
+}
+
+::size_t Talk::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:mmo.pb.Talk)
+  ::size_t total_size = 0;
+
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string Content = 1;
+  if (!this->_internal_content().empty()) {
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_content());
+  }
+
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
+}
+
+
+void Talk::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<Talk*>(&to_msg);
+  auto& from = static_cast<const Talk&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:mmo.pb.Talk)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_content().empty()) {
+    _this->_internal_set_content(from._internal_content());
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void Talk::CopyFrom(const Talk& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:mmo.pb.Talk)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+PROTOBUF_NOINLINE bool Talk::IsInitialized() const {
+  return true;
+}
+
+void Talk::InternalSwap(Talk* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.content_, &other->_impl_.content_, arena);
+}
+
+::google::protobuf::Metadata Talk::GetMetadata() const {
+  return ::_pbi::AssignDescriptors(
+      &descriptor_table_msg_2eproto_getter, &descriptor_table_msg_2eproto.once,
+      file_level_metadata_msg_2eproto[5]);
 }
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace pb
