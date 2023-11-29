@@ -44,21 +44,28 @@ void Player::SendMsgWithProtobuf(uint32_t id, google::protobuf::Message* msg) {
     conn_->Send(z_pack.GetAllData());
 }
 
+std::vector<Player*> Player::GetSurroundingPlayers(const WorldManager& wm) const {
+    std::vector<Player*> players;
+    std::vector<int32_t> pids = wm.GetAoiManager().GetSurroundingPlayersByPid(pid_, pos_);
+    players.reserve(pids.size());
+
+    for (int32_t pid : pids) {
+        players.emplace_back(wm.GetPlayerByPid(pid));
+    }
+
+    return players;
+}
+
 void Player::SyncPid() {
     mmo::pb::SyncPid syncPid_packet;
     syncPid_packet.set_pid(pid_);
-    SendMsgWithProtobuf(SYNC_PID_Protocol_ID, &syncPid_packet);
+    SendMsgWithProtobuf(Sync_Pid_Protocol_ID, &syncPid_packet);
 }
 
 
 void Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
     /* get surrounding all players */
-    std::vector<int32_t> pids = wm.GetAoiManager().GetSurroundingPlayersByPid(pid_, pos_);
-    std::vector<Player*> players;
-    players.reserve(pids.size());
-    for (int32_t pid : pids) {
-        players.emplace_back(wm.GetPlayerByPid(pid));
-    }
+    std::vector<Player*> players = GetSurroundingPlayers(wm);
 
     mmo::pb::BroadCast broadcast_packet;
     broadcast_packet.set_pid(pid_);
@@ -79,7 +86,7 @@ void Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
     /* tell current client that surrorunding players info(pid, position...) */
     mmo::pb::SyncPlayers sync_players_packet;
     sync_players_packet.mutable_ps()->Add(player_info_packets.begin(), player_info_packets.end());
-    SendMsgWithProtobuf(Sync_Player_Protocol_ID, &sync_players_packet);
+    SendMsgWithProtobuf(Sync_With_Surrounding_Players_Protocol_ID, &sync_players_packet);
 }
 
 void Player::WorldChat(const std::string& content, const mmo::WorldManager& wm) {
@@ -91,6 +98,16 @@ void Player::WorldChat(const std::string& content, const mmo::WorldManager& wm) 
     std::vector<Player*> all_players = wm.GetAllPlayers();
     for (Player* p : all_players) {
         p->SendMsgWithProtobuf(BroadCast_Protocol_ID, &broadcast_packet);
+    }
+}
+
+void Player::Offline(const mmo::WorldManager& wm) {
+    const std::vector<Player*> surrounding_players = GetSurroundingPlayers(wm);
+    mmo::pb::SyncPid sync_packet;
+    sync_packet.set_pid(pid_);
+    
+    for (Player* p : surrounding_players) {
+        p->SendMsgWithProtobuf(Sync_Disconnected_Player_Protocol_ID, &sync_packet);
     }
 }
 

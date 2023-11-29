@@ -5,6 +5,7 @@
 namespace mmo {
 
 class WorldChatHandler : public zinx::Handler {
+public:
     virtual void PreHandle(zinx::RequestContext& req) override
     { zinx::Handler::PreHandle(req); }
     
@@ -12,7 +13,6 @@ class WorldChatHandler : public zinx::Handler {
 
     virtual void PostHandle(zinx::RequestContext& req) override
     { zinx::Handler::PostHandle(req); }
-
 };
 
 } // namespace mmo

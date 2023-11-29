@@ -51,6 +51,8 @@ void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {
         return;
     }
 
+    mmo::Player* cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    cur_player->Offline(*mmo::GlobalWorldManager.get());
     /* remove disconnected player from player queue */
     mmo::GlobalWorldManager->RemovePlayerByPid(pid);
 }

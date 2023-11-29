@@ -39,9 +39,12 @@ public:
     /// 将自身位置广播至所有玩家客户端(包括自己)
     /// 将周围玩家信息同步到当前玩家客户端
     void SyncWithSurrounding(const mmo::WorldManager& wm);
-    
+
     void WorldChat(const std::string& content, const mmo::WorldManager& wm);
 
+    /// notify surrounding players that the current connection is offline
+    void Offline(const mmo::WorldManager& wm);
+    
     /// implement comparison predicate to adapt the container std::unorder_set
     /// check by muduo::TcpConnection instance 
     bool operator==(const Player& param) const {
@@ -50,6 +53,7 @@ public:
     
 private:
     void SendMsgWithProtobuf(uint32_t id, google::protobuf::Message* msg);    
+    std::vector<Player*> GetSurroundingPlayers(const WorldManager& wm) const;
     
 private:
     int32_t pid_;
