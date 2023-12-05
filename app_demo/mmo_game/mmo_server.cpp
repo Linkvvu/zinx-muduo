@@ -18,6 +18,7 @@ void initPlayer(const zinx::ZinxConnectionPtr& conn) {
     // notify PID to current client
     p->SyncPid();
 
+    // sync self client and surrounding players 
     p->SyncWithSurrounding(*mmo::GlobalWorldManager);
 }
 
@@ -27,6 +28,7 @@ void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {
     int32_t pid = mmo::util::getPidFromZConnection(conn);
     
     mmo::Player* cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    // sync other surrounding players 
     cur_player->Disappear(*mmo::GlobalWorldManager);
     // remove disconnected player from player queue
     mmo::GlobalWorldManager->RemovePlayerByPid(pid);
@@ -38,5 +40,8 @@ int main() {
     server->SetOnConnClose(&destroyPlayer);
     server->AddHandler(HANDLER_WORLD_CHAT_PACK_ID, std::make_unique<mmo::ChatHandler>());
     // server->AddHandler(HANDLER_MOVE_ID, std::make_unique<mmo::MoveHandler>());
+
+    mmo::initGlobalWorldManager();
+
     server->ListenAndServe();
 }

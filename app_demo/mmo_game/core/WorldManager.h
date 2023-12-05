@@ -9,7 +9,10 @@ namespace mmo {
 class WorldManager;
 
 /// global unique world manager handle
+/// @note must use after mmo::initGlobalWorldManager;
 extern std::unique_ptr<WorldManager> GlobalWorldManager;
+/// initialize global world manager instance
+extern void initGlobalWorldManager();
 
 class WorldManager {
 public:

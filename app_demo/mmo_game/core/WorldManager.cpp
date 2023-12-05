@@ -3,10 +3,13 @@
 
 using namespace mmo;
 
-// initialize global world manager instance
-std::unique_ptr<WorldManager> mmo::GlobalWorldManager = std::make_unique<WorldManager>(
-    50000.0F, 50000.0F, 1000.0F
-);
+std::unique_ptr<WorldManager> mmo::GlobalWorldManager {};
+
+void mmo::initGlobalWorldManager() {
+    mmo::GlobalWorldManager = std::make_unique<WorldManager>(
+        50000.0F, 50000.0F, 1000.0F
+    );
+}
 
 void WorldManager::AddPlayer(const std::shared_ptr<Player>& player) {
     {
@@ -68,3 +71,4 @@ std::vector<Player*> WorldManager::GetSurroundingPlayers(int32_t pid) const {
     
     return result;
 }
+
