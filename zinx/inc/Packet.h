@@ -33,11 +33,8 @@ public:
     std::string& GetAllData()
     { return data_; }
 
-    const char* GetPayload() const 
-    { return data_.data() + GetHeaderLength(); }
-
-    char* GetPayload() 
-    { return data_.data() + GetHeaderLength(); }
+    std::string GetPayload() 
+    { return data_.substr(GetHeaderLength()); }
 
     void Reset(const std::string& data) {
         data_ = data;
