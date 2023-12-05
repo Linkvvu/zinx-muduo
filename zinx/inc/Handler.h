@@ -10,19 +10,17 @@ namespace zinx {
 /// Default behavior of Handler is do nothing  
 class Handler {
 public:
-    virtual void PreHandle(RequestContext& req) = 0;
+    virtual void PreHandle(/* const */ RequestContext& req) {}
     
-    virtual void Handle(RequestContext& req) = 0;
+    virtual void Handle(/* const */ RequestContext& req) = 0;
 
-    virtual void PostHandle(RequestContext& req) = 0;
+    virtual void PostHandle(/* const */ RequestContext& req) {};
 
     virtual ~Handler() noexcept = default;
 };
 
 /* default implementations are do nothing */
-inline void Handler::PreHandle(RequestContext& req) { }
 inline void Handler::Handle(RequestContext& req) { }
-inline void Handler::PostHandle(RequestContext& req) { }
 
 } // namespace zinx 
 

@@ -38,6 +38,7 @@ message SyncPlayers {
 }
 
 // Represent a talk action
+// client -> server
 message Talk {
 	string Content=1;
 }

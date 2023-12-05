@@ -32,7 +32,8 @@ Player::Player(int32_t pid, const zinx::ZinxConnectionPtr& conn, const Position&
 
 std::shared_ptr<Player> mmo::CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos) {
     std::shared_ptr<Player> p;
-    p.reset(new Player(global_player_id++, conn, pos));
+    // std::memory_order_relaxed: Doesn`t need to sync, just need atomic operation 
+    p.reset(new Player(global_player_id.fetch_add(1, std::memory_order_relaxed), conn, pos));
     return p;
 }
 
@@ -69,4 +70,28 @@ void mmo::Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
     sync_players_packet.mutable_ps()->Add(player_info_packets.begin(), player_info_packets.end());
     const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(SYNC_PLAYERS_PACK_ID, &sync_players_packet);
     SendPacket(packet);
+}
+
+void mmo::Player::Disappear(const mmo::WorldManager& wm) {
+    const std::vector<Player*> surrounding_players = wm.GetSurroundingPlayers(pid_);
+    mmo::pb::SyncPid pb_sync_packet;
+    pb_sync_packet.set_pid(pid_);
+    const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(SYNC_LEAVE_PACK_ID, &pb_sync_packet);
+
+    for (Player* p : surrounding_players) {
+        p->SendPacket(packet);
+    }
+}
+
+void mmo::Player::WorldChat(const std::string& content, const mmo::WorldManager& wm) {
+    const std::vector<Player*> all_players = wm.GetAllPlayers();
+    mmo::pb::BroadCast pb_bc_talk_packet;
+    pb_bc_talk_packet.set_pid(pid_);
+    pb_bc_talk_packet.set_tp(BC_TALK_FIELD);
+    pb_bc_talk_packet.mutable_content()->assign(content);
+    const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &pb_bc_talk_packet);
+
+    for (Player* p : all_players) {
+        p->SendPacket(packet);
+    }
 }

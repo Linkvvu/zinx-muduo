@@ -1,3 +1,4 @@
+#include <muduo/base/Logging.h>
 #include <mmo_game/util/util.h>
 #include <random>
 
@@ -23,3 +24,15 @@ mmo::Position mmo::util::getRandomPoistion() {
         0,                          // angle
     };
 }
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wreturn-type"
+int32_t mmo::util::getPidFromZConnection(const zinx::ZinxConnectionPtr& ctx) {
+    try {
+        return std::any_cast<int32_t>(ctx->GetContext());
+    } catch (const std::bad_any_cast& e) {
+        /// If failed to get pid, @c abort()
+        LOG_FATAL << e.what(); 
+    }
+}
+#pragma GCC diagnostic pop
