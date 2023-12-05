@@ -95,3 +95,30 @@ void mmo::Player::WorldChat(const std::string& content, const mmo::WorldManager&
         p->SendPacket(packet);
     }
 }
+
+void mmo::Player::UpdatePos(const Position& new_pos, const mmo::WorldManager& wm) {
+    const Position old_position = GetPosition();
+    pos_ = new_pos;
+
+    Grid& old_gird = wm.GetAoiManager().GetGridByPosition(old_position);
+    Grid& new_gird = wm.GetAoiManager().GetGridByPosition(new_pos);
+
+    // Check whether the grid is crossed
+    if (old_gird != new_gird) {
+        /// TODO:
+        ///     1. Disappears from the player's view in the old grid
+        ///     2. Appears from the player's view in the new gird
+    }
+    
+    pb::BroadCast pb_bc_packet;
+    pb_bc_packet.set_pid(GetPid());
+    pb_bc_packet.set_tp(BC_MOVE_FIELD);
+    SetPosition(pb_bc_packet.mutable_p(), GetPosition());
+    const zinx::ZinxPacket_LTD encoded_packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &pb_bc_packet);
+
+    // Send current position to all the surrounding players
+    const std::vector<Player*> surrounding_players = wm.GetSurroundingPlayers(GetPid());
+    for (Player* p : surrounding_players) {
+        p->SendPacket(encoded_packet);
+    }
+}

@@ -7,10 +7,10 @@
 #define SYNC_PLAYERS_PACK_ID        202
 
 #define HANDLER_WORLD_CHAT_PACK_ID  2
-#define HANDLER_ACTION_PACK_ID      3
+#define HANDLER_MOVE_PACK_ID      3
 
 #define BC_TALK_FIELD               1
 #define BC_POS_FIELD                2
-#define BC_ACTION_FIELD             4
+#define BC_MOVE_FIELD             4
 
 #endif // MMO_API_MSG_ID_H

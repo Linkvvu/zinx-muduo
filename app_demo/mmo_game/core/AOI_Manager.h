@@ -25,6 +25,7 @@ public:
         Grid& target_grid = GetGridByPosition(pos);
         RemovePlayerFromGrid(pid, target_grid);
     }
+
     void RemovePlayerFromGrid(int32_t pid, Grid& target_grid) const {
         target_grid.RemovePlayer(pid);
     }
@@ -36,6 +37,8 @@ public:
     std::vector<int32_t> GetSurroundingPlayersByPid(const Player* p) const
     { return GetSurroundingPlayersByPid(p->GetPid(), p->GetPosition()); }
 
+    Grid& GetGridByPosition(const Position& p) const;
+
 private:
     int GetColumnIndex(const Position& p) const
     { return static_cast<int>(p.X) / cellSize_; }
@@ -45,8 +48,6 @@ private:
 
     bool IsVaildGrid(int row, int col) const 
     { return (row >= 0 && row < countY_) && (col >= 0 && col < countX_); }
-
-    Grid& GetGridByPosition(const Position& p) const;
 
 private:
     const float worldlength_;

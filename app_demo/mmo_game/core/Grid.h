@@ -19,6 +19,10 @@ public:
     void AddNewPlayer(int32_t pid);
     void RemovePlayer(int32_t pid);
 
+    bool operator!=(const Grid& another) const {
+        return this != &another;
+    }
+
 private:
     /// for debug 
     bool HasPlayerByPid(int32_t pid) const

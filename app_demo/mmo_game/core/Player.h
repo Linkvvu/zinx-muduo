@@ -53,6 +53,9 @@ public:
     /// Notify surrounding players that the current player is disappeared or offline
     void Disappear(const mmo::WorldManager& wm);
     
+    /// Update the current client position and sync to surrounding players
+    void UpdatePos(const Position& new_pos, const mmo::WorldManager& wm);
+
 private:
     void SendPacket(const zinx::Packet& p)
     { conn_->Send(p.GetAllData()); }

@@ -31,6 +31,7 @@ int32_t mmo::util::getPidFromZConnection(const zinx::ZinxConnectionPtr& ctx) {
     try {
         return std::any_cast<int32_t>(ctx->GetContext());
     } catch (const std::bad_any_cast& e) {
+    /// FIXME: Disconnect the current connection instead of abort
         /// If failed to get pid, @c abort()
         LOG_FATAL << e.what(); 
     }

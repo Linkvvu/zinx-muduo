@@ -4,6 +4,7 @@
 #include <mmo_game/core/Player.h>
 #include <mmo_game/core/WorldManager.h>
 #include <mmo_game/handler/ChatHandler.h>
+#include <mmo_game/handler/MoveHandler.h>
 
 void initPlayer(const zinx::ZinxConnectionPtr& conn) {
     // Create a Player instance
@@ -39,9 +40,10 @@ int main() {
     server->SetOnConnStart(&initPlayer);
     server->SetOnConnClose(&destroyPlayer);
     server->AddHandler(HANDLER_WORLD_CHAT_PACK_ID, std::make_unique<mmo::ChatHandler>());
-    // server->AddHandler(HANDLER_MOVE_ID, std::make_unique<mmo::MoveHandler>());
+    server->AddHandler(HANDLER_MOVE_PACK_ID, std::make_unique<mmo::MoveHandler>());
 
     mmo::initGlobalWorldManager();
-
+    assert(mmo::GlobalWorldManager.operator bool());
+    
     server->ListenAndServe();
 }

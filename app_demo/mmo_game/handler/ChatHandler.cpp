@@ -12,7 +12,7 @@ void ChatHandler::Handle(zinx::RequestContext& ctx) {
     pb::Talk received_packet;
     bool ok = received_packet.ParseFromString(ctx.GetPacket()->GetPayload());    
     if (!ok) {
-        LOG_WARN << "Failed to parse Talk-Packet, detail: pid=" << pid;        
+        LOG_WARN << "Failed to parse Talk-Packet in mmo::ChatHandler::Handle, detail: pid=" << pid;        
         /// FIXME: disconnect instead of only @c return
         return;
     }
