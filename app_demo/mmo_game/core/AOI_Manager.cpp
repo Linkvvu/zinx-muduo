@@ -1,3 +1,4 @@
+#include <muduo/base/Logging.h>
 #include <mmo_game/core/AOI_Manager.h>
 #include <cassert>
 
@@ -20,8 +21,8 @@ AOI_Manager::AOI_Manager(float world_length, float world_width, float cell_size)
         }
     }
 
-    std::clog << "The world map is initialized, detail: cell size="
-            << cellSize_ << ", X-grid num=" << countX_ << " Y-grid num=" << countY_ << std::endl;
+    LOG_INFO << "The world map is initialized, detail: cell size="
+            << cellSize_ << ", row number=" << countY_ << " column number=" << countX_;
 }
 
 std::vector<int32_t> AOI_Manager::GetSurroundingPlayersByPid(int32_t pid, const Position& pos) const {

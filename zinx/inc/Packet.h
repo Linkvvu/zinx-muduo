@@ -12,8 +12,8 @@ namespace zinx {
 class Packet : Copyable {
 public:
     /// construct a empty packet by default
-    Packet(const std::string& data = std::string())
-        : data_(data)
+    Packet()
+        : data_(std::string())
     {
         // Note: Can`t use polymorphic (virtual) method in constructor and destructor!!!
     }

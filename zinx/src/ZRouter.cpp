@@ -41,12 +41,7 @@ bool ZinxRouter::AddHandler(uint32_t id, std::unique_ptr<Handler> && handler) {
 }
 
 void ZinxRouter::InitWorkerConfig() {
-    /// TODO:
-    /// set MaxQueueSize and workers number in ThreadPool from config file
-
-    // workerThreads_.SetMaxQueueSize();
-
     // workerThreads_.SetThreadInitCallback();
-    workerThreads_.Start(static_cast<int>(GlobalConfig::worker_thread_num));
     workerThreads_.SetMaxQueueSize(GlobalConfig::max_task_queue_size);
+    workerThreads_.Start(static_cast<int>(GlobalConfig::worker_thread_num));
 }
