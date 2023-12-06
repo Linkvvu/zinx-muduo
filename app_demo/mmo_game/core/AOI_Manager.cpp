@@ -27,8 +27,18 @@ AOI_Manager::AOI_Manager(float world_length, float world_width, float cell_size)
 
 std::vector<int32_t> AOI_Manager::GetSurroundingPlayersByPid(int32_t pid, const Position& pos) const {
     std::vector<int32_t> result;
-    std::vector<Grid*> grids;
+    std::vector<const Grid*> grids = GetSudokuByPosition(pos);
 
+    for (const Grid* g : grids) {
+        const auto& players = g->GetAllPlayers();
+        result.insert(result.end(), players.begin(), players.end());
+    }
+
+    return result;
+}
+
+std::vector<const Grid*> mmo::AOI_Manager::GetSudokuByPosition(const Position & pos) const {
+    std::vector<const Grid*> result;
     int center_col_idx = GetColumnIndex(pos);
     int center_row_idx = GetRowIndex(pos);
     for (int x = -1; x <= 1; x++) {
@@ -38,16 +48,10 @@ std::vector<int32_t> AOI_Manager::GetSurroundingPlayersByPid(int32_t pid, const 
             if (IsVaildGrid(cur_row, cur_col)) {
                 Grid* cur_grid = worldMap_[cur_row][cur_col].get();
                 assert(cur_grid != nullptr);
-                grids.push_back(cur_grid);
+                result.push_back(cur_grid);
             }
         }
     }
-
-    for (const Grid* g : grids) {
-        const auto& players = g->GetAllPlayers();
-        result.insert(result.end(), players.begin(), players.end());
-    }
-
     return result;
 }
 

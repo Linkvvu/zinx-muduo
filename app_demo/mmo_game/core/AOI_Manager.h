@@ -37,11 +37,13 @@ public:
     std::vector<int32_t> GetSurroundingPlayersByPid(const Player* p) const
     { return GetSurroundingPlayersByPid(p->GetPid(), p->GetPosition()); }
 
+    std::vector<const Grid*> GetSudokuByPosition(const Position& pos) const;
+
     Grid& GetGridByPosition(const Position& p) const;
 
 private:
     int GetColumnIndex(const Position& p) const
-    { return static_cast<int>(p.X) / cellSize_; }
+    { return static_cast<int>(p.X / cellSize_); }
 
     int GetRowIndex(const Position& p) const
     { return static_cast<int>(p.Z / cellSize_); }

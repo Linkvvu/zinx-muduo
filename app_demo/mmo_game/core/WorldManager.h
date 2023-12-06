@@ -4,6 +4,7 @@
 #include <mmo_game/core/AOI_Manager.h>
 #include <unordered_map>
 #include <shared_mutex>
+#include <vector>
 
 namespace mmo {
 class WorldManager;
@@ -33,7 +34,11 @@ public:
         return players_.at(pid).get();
     }
 
+    /// Get all players of the current world 
     std::vector<Player*> GetAllPlayers() const;
+
+    /// Get all players of the given grids 
+    std::vector<Player*> GetAllPlayers(const std::vector<const Grid*>& grids) const;
 
     std::vector<Player*> GetSurroundingPlayers(int32_t pid) const;
 

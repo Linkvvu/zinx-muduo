@@ -7,6 +7,9 @@
 #include <mmo_game/handler/MoveHandler.h>
 
 void initPlayer(const zinx::ZinxConnectionPtr& conn) {
+    // disable Nigle algorithm 
+    conn->SetTcpNoDelay(true);
+
     // Create a Player instance
     std::shared_ptr<mmo::Player> p = mmo::CreateNewPlayer(conn, mmo::util::getRandomPoistion());
     

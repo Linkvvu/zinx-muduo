@@ -16,6 +16,7 @@ struct Position
     int V;    // view angle
 };
 
+class Grid;         // forward declaration
 class Player;       // forward declaration
 class WorldManager; // forward declaration
 
@@ -59,6 +60,8 @@ public:
 private:
     void SendPacket(const zinx::Packet& p)
     { conn_->Send(p.GetAllData()); }
+
+    void HandleCrossedGrid(const Position& old_pos, const Position& new_pos, const mmo::WorldManager& wm);
 
 private:
     int32_t pid_;

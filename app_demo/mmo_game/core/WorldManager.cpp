@@ -7,7 +7,7 @@ std::unique_ptr<WorldManager> mmo::GlobalWorldManager {};
 
 void mmo::initGlobalWorldManager() {
     mmo::GlobalWorldManager = std::make_unique<WorldManager>(
-        50000.0F, 50000.0F, 1000.0F
+        400.0F, 400.0F, 20.0F
     );
 }
 
@@ -56,6 +56,17 @@ std::vector<Player*> WorldManager::GetAllPlayers() const {
         all_players.push_back(pair.second.get());
     }
     return all_players;
+}
+
+std::vector<Player*> mmo::WorldManager::GetAllPlayers(const std::vector<const Grid*>& grids) const {
+    std::vector<Player*> result;
+    for (const Grid* g : grids) {
+        const std::vector<int32_t> pids = g->GetAllPlayers();
+        for (int32_t pid : pids) {
+            result.push_back(GetPlayerByPid(pid));
+        }
+    }
+    return result;
 }
 
 std::vector<Player*> WorldManager::GetSurroundingPlayers(int32_t pid) const {
