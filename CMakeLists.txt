@@ -13,6 +13,5 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_L
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
 
 include_directories(${CMAKE_SOURCE_DIR})
-
 add_subdirectory(${CMAKE_SOURCE_DIR}/zinx)
-add_subdirectory(${CMAKE_SOURCE_DIR}/mmo_game)
+add_subdirectory(${CMAKE_SOURCE_DIR}/app_demo/mmo_game)
