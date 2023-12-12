@@ -30,8 +30,8 @@ size_t GlobalConfig::max_task_queue_size = 30;
 void GlobalConfig::InitConfig() {
     std::ifstream ifs("zinx_config.json");
     if (!ifs.is_open()) {
-        LOG_WARN << "does`t find config file<zinx_config.json>, use default config!";
-        return ;
+        LOG_WARN << "does't find config file<zinx_config.json>, use default config!";
+        return;
     }
 
     json configs;
@@ -44,55 +44,23 @@ void GlobalConfig::InitConfig() {
         return;
     }
 
-    try {
-        if (configs.find("server_name") != configs.end())
-            server_name = configs["server_name"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
+    auto parseConfigValue = [&](const std::string& key, auto& configVariable) {
+        try {
+            if (configs.find(key) != configs.end())
+                configVariable = configs[key];
+        } catch (const json::exception& e) {
+            LOG_ERROR << "Failed to parse config for " << key << ", will use default config for this field, detail: " << e.what();
+        }
+    };
 
-    try {
-        if (configs.find("version") != configs.end())
-            version = configs["version"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
+    parseConfigValue("server_name", server_name);
+    parseConfigValue("version", version);
+    parseConfigValue("host", host);
+    parseConfigValue("port", port);
+    parseConfigValue("io_thread_num", io_thread_num);
+    parseConfigValue("worker_thread_num", worker_thread_num);
+    parseConfigValue("max_task_queue_size", max_task_queue_size);
 
-    try {
-        if (configs.find("host") != configs.end())
-            host = configs["host"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
-    
-    try {
-        if (configs.find("port") != configs.end())
-            port = configs["port"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
-
-    try {
-        if (configs.find("io_thread_num") != configs.end())
-            io_thread_num = configs["io_thread_num"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
-
-    try {
-        if (configs.find("worker_thread_num") != configs.end())
-            worker_thread_num = configs["worker_thread_num"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
-
-    try {
-        if (configs.find("max_task_queue_size") != configs.end())
-            max_task_queue_size = configs["max_task_queue_size"];
-    } catch (const json::exception& e) {
-        LOG_ERROR << "Failed to parse config, will use default config, detail: " << e.what();
-    }
-        
     ifs.close();
 }
 
