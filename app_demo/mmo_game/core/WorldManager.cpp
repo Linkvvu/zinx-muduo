@@ -59,25 +59,29 @@ std::vector<Player*> WorldManager::GetAllPlayers() const {
 }
 
 std::vector<Player*> mmo::WorldManager::GetAllPlayers(const std::vector<const Grid*>& grids) const {
+    std::shared_lock<std::shared_mutex> guard(rw_mutex_);
+
     std::vector<Player*> result;
     for (const Grid* g : grids) {
         const std::vector<int32_t> pids = g->GetAllPlayers();
         for (int32_t pid : pids) {
-            result.push_back(GetPlayerByPid(pid));
+            result.push_back(GetPlayerByPid(pid, false));
         }
     }
     return result;
 }
 
 std::vector<Player*> WorldManager::GetSurroundingPlayers(int32_t pid) const {
-    Player* target_player = GetPlayerByPid(pid);
+    std::shared_lock<std::shared_mutex> guard(rw_mutex_);
+
+    Player* target_player = GetPlayerByPid(pid, false);
     std::vector<int32_t> players = aoiManager_.GetSurroundingPlayersByPid(target_player);
 
     std::vector<Player*> result;
     result.reserve(players.size());
     
     for (int32_t pid : players) {
-        result.push_back(GetPlayerByPid(pid));
+        result.push_back(GetPlayerByPid(pid, false));
     }
     
     return result;

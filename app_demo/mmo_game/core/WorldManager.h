@@ -28,10 +28,15 @@ public:
     const AOI_Manager& GetAoiManager() const
     { return aoiManager_; }
 
-    Player* GetPlayerByPid(int32_t pid) const {
-        std::shared_lock<std::shared_mutex> guard(rw_mutex_);
-        assert(HasPlayer(pid));
-        return players_.at(pid).get();
+    Player* GetPlayerByPid(int32_t pid, bool lock = true) const {
+        if (lock) {
+            std::shared_lock<std::shared_mutex> guard(rw_mutex_);
+            assert(HasPlayer(pid));
+            return players_.at(pid).get();
+        } else {
+            assert(HasPlayer(pid));
+            return players_.at(pid).get();
+        }
     }
 
     /// Get all players of the current world 

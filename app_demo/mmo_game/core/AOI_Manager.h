@@ -43,6 +43,7 @@ public:
 
 private:
     int GetColumnIndex(const Position& p) const
+
     { return static_cast<int>(p.X / cellSize_); }
 
     int GetRowIndex(const Position& p) const
