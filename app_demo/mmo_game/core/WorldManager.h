@@ -28,24 +28,24 @@ public:
     const AOI_Manager& GetAoiManager() const
     { return aoiManager_; }
 
-    Player* GetPlayerByPid(int32_t pid, bool lock = true) const {
+    PlayerPtr GetPlayerByPid(int32_t pid, bool lock = true) const {
         if (lock) {
             std::shared_lock<std::shared_mutex> guard(rw_mutex_);
             assert(HasPlayer(pid));
-            return players_.at(pid).get();
+            return players_.at(pid);
         } else {
             assert(HasPlayer(pid));
-            return players_.at(pid).get();
+            return players_.at(pid);
         }
     }
 
     /// Get all players of the current world 
-    std::vector<Player*> GetAllPlayers() const;
+    std::vector<PlayerPtr> GetAllPlayers() const;
 
     /// Get all players of the given grids 
-    std::vector<Player*> GetAllPlayers(const std::vector<const Grid*>& grids) const;
+    std::vector<PlayerPtr> GetAllPlayers(const std::vector<const Grid*>& grids) const;
 
-    std::vector<Player*> GetSurroundingPlayers(int32_t pid) const;
+    std::vector<PlayerPtr> GetSurroundingPlayers(int32_t pid) const;
 
 private:
     bool HasPlayer(int32_t pid) const 

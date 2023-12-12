@@ -19,6 +19,7 @@ struct Position
 class Grid;         // forward declaration
 class Player;       // forward declaration
 class WorldManager; // forward declaration
+using PlayerPtr = std::shared_ptr<mmo::Player>;
 
 /// Factory method
 std::shared_ptr<Player> CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos);

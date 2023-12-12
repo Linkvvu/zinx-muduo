@@ -46,7 +46,7 @@ void Player::SyncPid() {
 
 
 void mmo::Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
-    std::vector<Player*> surrounding_players = wm.GetSurroundingPlayers(pid_);
+    std::vector<PlayerPtr> surrounding_players = wm.GetSurroundingPlayers(pid_);
     mmo::pb::BroadCast broadcast_packet;
     broadcast_packet.set_pid(GetPid());
     broadcast_packet.set_tp(BC_POS_FIELD);
@@ -54,7 +54,7 @@ void mmo::Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
 
     std::vector<mmo::pb::Player> player_info_packets(surrounding_players.size(), mmo::pb::Player());
     for (size_t i = 0; i < surrounding_players.size(); i++) {
-        Player* cur_player = surrounding_players[i];
+        PlayerPtr cur_player = surrounding_players[i];
         // broadcast current player`s position to his surrounding players
         const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &broadcast_packet);
         cur_player->SendPacket(packet);
@@ -73,25 +73,25 @@ void mmo::Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
 }
 
 void mmo::Player::Disappear(const mmo::WorldManager& wm) {
-    const std::vector<Player*> surrounding_players = wm.GetSurroundingPlayers(pid_);
+    const std::vector<PlayerPtr> surrounding_players = wm.GetSurroundingPlayers(pid_);
     mmo::pb::SyncPid pb_sync_packet;
     pb_sync_packet.set_pid(pid_);
     const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(SYNC_LEAVE_PACK_ID, &pb_sync_packet);
 
-    for (Player* p : surrounding_players) {
+    for (const PlayerPtr& p : surrounding_players) {
         p->SendPacket(packet);
     }
 }
 
 void mmo::Player::WorldChat(const std::string& content, const mmo::WorldManager& wm) {
-    const std::vector<Player*> all_players = wm.GetAllPlayers();
+    const std::vector<PlayerPtr> all_players = wm.GetAllPlayers();
     mmo::pb::BroadCast pb_bc_talk_packet;
     pb_bc_talk_packet.set_pid(pid_);
     pb_bc_talk_packet.set_tp(BC_TALK_FIELD);
     pb_bc_talk_packet.mutable_content()->assign(content);
     const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &pb_bc_talk_packet);
 
-    for (Player* p : all_players) {
+    for (const auto& p : all_players) {
         p->SendPacket(packet);
     }
 }
@@ -117,8 +117,8 @@ void mmo::Player::UpdatePos(const Position& new_pos, const mmo::WorldManager& wm
     const zinx::ZinxPacket_LTD encoded_packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &pb_bc_packet);
 
     // Send current position to all the surrounding players
-    const std::vector<Player*> surrounding_players = wm.GetSurroundingPlayers(GetPid());
-    for (Player* p : surrounding_players) {
+    const std::vector<PlayerPtr> surrounding_players = wm.GetSurroundingPlayers(GetPid());
+    for (const PlayerPtr& p : surrounding_players) {
         p->SendPacket(encoded_packet);
     }
 }
@@ -149,7 +149,7 @@ void mmo::Player::HandleCrossedGrid(const Position& old_pos, const Position& new
         }
     }
 
-    std::vector<Player*> tmp_player_set;
+    std::vector<PlayerPtr> tmp_player_set;
     // 令当前玩家从超出可见范围的玩家的视野里消失
     {
         tmp_player_set = wm.GetAllPlayers(disappeared_grids);
@@ -158,7 +158,7 @@ void mmo::Player::HandleCrossedGrid(const Position& old_pos, const Position& new
         pb_sync_pack_to_other.set_pid(GetPid());
         zinx::ZinxPacket_LTD encoded_packet = util::packToLTDWithProtobuf(SYNC_LEAVE_PACK_ID, &pb_sync_pack_to_other);
 
-        for (Player* p : tmp_player_set) {
+        for (const PlayerPtr& p : tmp_player_set) {
             p->SendPacket(encoded_packet);
 
             pb::SyncPid pb_sync_pack_to_self;
@@ -178,7 +178,7 @@ void mmo::Player::HandleCrossedGrid(const Position& old_pos, const Position& new
         SetPosition(pb_bc_pack_to_other.mutable_p(), GetPosition());    // GetPosition() == new_pos
         zinx::ZinxPacket_LTD encoded_packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &pb_bc_pack_to_other);
 
-        for (Player* p : tmp_player_set) {
+        for (const PlayerPtr& p : tmp_player_set) {
             p->SendPacket(encoded_packet);
 
             pb::BroadCast pb_bc_pack_to_self;

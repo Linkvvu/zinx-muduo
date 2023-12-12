@@ -17,7 +17,7 @@ void MoveHandler::Handle(zinx::RequestContext& ctx) {
     }
 
     /// TODO: Get mmo::WorldManager from zinx::RequestContext instead of to use global variable 
-    Player* p = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    const PlayerPtr& p = mmo::GlobalWorldManager->GetPlayerByPid(pid);
     p->UpdatePos(mmo::Position{
             static_cast<int>(received_packet.x()), static_cast<int>(received_packet.y()),
             static_cast<int>(received_packet.z()), static_cast<int>(received_packet.v())

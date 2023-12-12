@@ -18,6 +18,6 @@ void ChatHandler::Handle(zinx::RequestContext& ctx) {
     }
 
     /// TODO: Get mmo::WorldManager from zinx::RequestContext instead of to use global variable 
-    Player* p = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    const PlayerPtr& p = mmo::GlobalWorldManager->GetPlayerByPid(pid);
     p->WorldChat(*received_packet.mutable_content(), *mmo::GlobalWorldManager);
 }

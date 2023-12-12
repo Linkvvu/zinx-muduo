@@ -47,21 +47,21 @@ void WorldManager::RemovePlayerByPid(int32_t pid) {
     assert(ret == 1);
 }
 
-std::vector<Player*> WorldManager::GetAllPlayers() const {
+std::vector<PlayerPtr> WorldManager::GetAllPlayers() const {
     std::shared_lock<std::shared_mutex> guard(rw_mutex_);
     
-    std::vector<Player*> all_players;
+    std::vector<PlayerPtr> all_players;
     all_players.reserve(players_.size());
     for (const auto& pair : players_) {
-        all_players.push_back(pair.second.get());
+        all_players.push_back(pair.second);
     }
     return all_players;
 }
 
-std::vector<Player*> mmo::WorldManager::GetAllPlayers(const std::vector<const Grid*>& grids) const {
+std::vector<PlayerPtr> mmo::WorldManager::GetAllPlayers(const std::vector<const Grid*>& grids) const {
     std::shared_lock<std::shared_mutex> guard(rw_mutex_);
 
-    std::vector<Player*> result;
+    std::vector<PlayerPtr> result;
     for (const Grid* g : grids) {
         const std::vector<int32_t> pids = g->GetAllPlayers();
         for (int32_t pid : pids) {
@@ -71,13 +71,13 @@ std::vector<Player*> mmo::WorldManager::GetAllPlayers(const std::vector<const Gr
     return result;
 }
 
-std::vector<Player*> WorldManager::GetSurroundingPlayers(int32_t pid) const {
+std::vector<PlayerPtr> WorldManager::GetSurroundingPlayers(int32_t pid) const {
     std::shared_lock<std::shared_mutex> guard(rw_mutex_);
 
-    Player* target_player = GetPlayerByPid(pid, false);
+    PlayerPtr target_player = GetPlayerByPid(pid, false);
     std::vector<int32_t> players = aoiManager_.GetSurroundingPlayersByPid(target_player);
 
-    std::vector<Player*> result;
+    std::vector<PlayerPtr> result;
     result.reserve(players.size());
     
     for (int32_t pid : players) {

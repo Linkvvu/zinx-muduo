@@ -5,6 +5,7 @@
 #include <mmo_game/core/WorldManager.h>
 #include <mmo_game/handler/ChatHandler.h>
 #include <mmo_game/handler/MoveHandler.h>
+#include <csignal>
 
 void initPlayer(const zinx::ZinxConnectionPtr& conn) {
     // disable Nigle algorithm 
@@ -31,7 +32,7 @@ void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {
 
     int32_t pid = mmo::util::getPidFromZConnection(conn);
     
-    mmo::Player* cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    mmo::PlayerPtr cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid);
     // sync other surrounding players 
     cur_player->Disappear(*mmo::GlobalWorldManager);
     // remove disconnected player from player queue
@@ -39,6 +40,8 @@ void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {
 }
 
 int main() {
+    std::signal(SIGPIPE, SIG_IGN);
+    
     std::unique_ptr<zinx::ZinxServer> server = zinx::NewZinxServer();
     server->SetOnConnStart(&initPlayer);
     server->SetOnConnClose(&destroyPlayer);

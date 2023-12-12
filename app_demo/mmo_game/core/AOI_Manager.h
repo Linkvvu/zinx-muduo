@@ -34,7 +34,7 @@ public:
     std::vector<int32_t> GetSurroundingPlayersByPid(int32_t pid, const Position& pos) const;
 
     /// Get surrounding all players`s PID of given player
-    std::vector<int32_t> GetSurroundingPlayersByPid(const Player* p) const
+    std::vector<int32_t> GetSurroundingPlayersByPid(const PlayerPtr& p) const
     { return GetSurroundingPlayersByPid(p->GetPid(), p->GetPosition()); }
 
     std::vector<const Grid*> GetSudokuByPosition(const Position& pos) const;
