@@ -8,26 +8,18 @@
 
 namespace zinx {
 
-class ZinxRouter : public Router {
+class ZinxRouter : public base::Router {
 public:
-    ZinxRouter()
-    {
-        InitWorkerConfig();
-    }
+    ZinxRouter() = default;
 
     bool AddHandler(uint32_t id, std::unique_ptr<Handler>&& handler);
 
-    virtual void RouteAndHandle(RequestContext& req) const override;
+    virtual void RouteAndHandle(base::RequestContext& req) const override;
 
     virtual ~ZinxRouter() = default;
 
 private:
-
-    void InitWorkerConfig();
-
-private:
-    std::unordered_map<uint32_t, std::unique_ptr<Handler>> mapper_ {};
-    mutable muduo::ThreadPool workerThreads_ {};
+    std::unordered_map<uint32_t, std::unique_ptr<Handler>> mapper_;
 };
 
 } // namespace zinx 

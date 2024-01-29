@@ -7,12 +7,14 @@
 #include <mmo_game/handler/MoveHandler.h>
 #include <csignal>
 
+zinx::ZinxServer* g_zinx_server = nullptr;
+
 void initPlayer(const zinx::ZinxConnectionPtr& conn) {
     // disable Nigle algorithm 
     conn->SetTcpNoDelay(true);
 
     // Create a Player instance
-    std::shared_ptr<mmo::Player> p = mmo::CreateNewPlayer(conn, mmo::util::getRandomPoistion());
+    std::shared_ptr<mmo::Player> p = mmo::CreateNewPlayer(conn, mmo::util::getRandomPosition());
     
     // set current connection`s properties
     conn->SetContext(static_cast<int32_t>(p->GetPid()));
@@ -32,7 +34,7 @@ void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {
 
     int32_t pid = mmo::util::getPidFromZConnection(conn);
     
-    mmo::PlayerPtr cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    mmo::PlayerPtr cur_player = mmo::GlobalWorldManager->GetPlayerByPid(pid, true);
     // sync other surrounding players 
     cur_player->Disappear(*mmo::GlobalWorldManager);
     // remove disconnected player from player queue
@@ -40,9 +42,15 @@ void destroyPlayer(const zinx::ZinxConnectionPtr& conn) {
 }
 
 int main() {
+    /// handle signals
     std::signal(SIGPIPE, SIG_IGN);
-    
+    std::signal(SIGINT, [](int sig) {
+        g_zinx_server->Stop();
+    });
+
     std::unique_ptr<zinx::ZinxServer> server = zinx::NewZinxServer();
+    g_zinx_server = server.get();
+    
     server->SetOnConnStart(&initPlayer);
     server->SetOnConnClose(&destroyPlayer);
     server->AddHandler(HANDLER_WORLD_CHAT_PACK_ID, std::make_unique<mmo::ChatHandler>());
@@ -52,4 +60,7 @@ int main() {
     assert(mmo::GlobalWorldManager.operator bool());
     
     server->ListenAndServe();
+
+    /// Destroy all resources from protobuf
+    google::protobuf::ShutdownProtobufLibrary();
 }

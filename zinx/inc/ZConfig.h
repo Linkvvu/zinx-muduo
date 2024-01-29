@@ -4,7 +4,8 @@
 #include <string>
 
 namespace zinx {
-    
+namespace base {
+
 class GlobalConfig {
     GlobalConfig() = delete;
     GlobalConfig(const GlobalConfig&) = delete;
@@ -28,7 +29,7 @@ public:
      * default value: 3
      * brief:
      *      = 0: single-Reactor mode, Acceptor and IO-handler run in same thread
-     *      > 0: mulple-Reactor mode
+     *      > 0: mutiple-Reactor mode
      */
     static size_t io_thread_num;
 
@@ -46,6 +47,7 @@ public:
     static void InitConfig();
 };
 
+} // namespace base 
 } // namespace zinx 
 
 #endif // ZINX_CONFIG_H

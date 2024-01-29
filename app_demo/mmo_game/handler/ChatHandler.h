@@ -7,7 +7,7 @@ namespace mmo {
 
 class ChatHandler : public zinx::Handler {
 public:
-    virtual void Handle(zinx::RequestContext& ctx) override;
+    virtual void Handle(zinx::base::RequestContext& ctx) override;
 };
 
 } // namespace mmo 

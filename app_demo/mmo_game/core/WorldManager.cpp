@@ -34,6 +34,8 @@ void WorldManager::AddPlayer(std::shared_ptr<Player>&& player) {
 }
 
 void WorldManager::RemovePlayerByPid(int32_t pid) {
+    std::unique_lock<std::shared_mutex> guard(rw_mutex_);
+    
     assert(HasPlayer(pid));
     std::shared_ptr<Player>& target_player = players_[pid];
 
@@ -41,8 +43,7 @@ void WorldManager::RemovePlayerByPid(int32_t pid) {
     const Position& pos_of_target_player = target_player->GetPosition();
     aoiManager_.RemovePlayerFromGrid(pid, pos_of_target_player);
 
-    // remove player instace
-    std::unique_lock<std::shared_mutex> guard(rw_mutex_);
+    // remove player instance
     size_t ret = players_.erase(pid);
     assert(ret == 1);
 }

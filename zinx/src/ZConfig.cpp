@@ -10,6 +10,7 @@
 using json = nlohmann::json;
 
 namespace zinx {
+using namespace base;
 const std::string GlobalConfig::logo = R"(
  _____    _                      __  ___            __            
 /__  /   (_)____   _  __        /  |/  /__  __ ____/ /__  __ ____ 
@@ -30,8 +31,11 @@ size_t GlobalConfig::max_task_queue_size = 30;
 void GlobalConfig::InitConfig() {
     std::ifstream ifs("zinx_config.json");
     if (!ifs.is_open()) {
-        LOG_WARN << "does't find config file<zinx_config.json>, use default config!";
-        return;
+        ifs.open("/etc/zinx_config.json");
+        if (!ifs.is_open()) {
+            LOG_WARN << "does't find config file<zinx_config.json>, use default config!";
+            return;
+        }
     }
 
     json configs;
@@ -44,7 +48,7 @@ void GlobalConfig::InitConfig() {
         return;
     }
 
-    auto parseConfigValue = [&](const std::string& key, auto& configVariable) {
+    auto parseConfigValue = [&configs](const std::string& key, auto& configVariable) {
         try {
             if (configs.find(key) != configs.end())
                 configVariable = configs[key];

@@ -67,7 +67,11 @@ void mmo::Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
     }
 
     mmo::pb::SyncPlayers sync_players_packet;
-    sync_players_packet.mutable_ps()->Add(player_info_packets.begin(), player_info_packets.end());
+    for (auto begin = player_info_packets.begin(); begin != player_info_packets.end(); ++begin) {
+        *sync_players_packet.mutable_ps()->Add() = *begin;
+    }
+    // Support after 25.x
+    // sync_players_packet.mutable_ps()->Add(player_info_packets.begin(), player_info_packets.end());
     const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(SYNC_PLAYERS_PACK_ID, &sync_players_packet);
     SendPacket(packet);
 }
@@ -76,7 +80,7 @@ void mmo::Player::Disappear(const mmo::WorldManager& wm) {
     const std::vector<PlayerPtr> surrounding_players = wm.GetSurroundingPlayers(pid_);
     mmo::pb::SyncPid pb_sync_packet;
     pb_sync_packet.set_pid(pid_);
-    const zinx::ZinxPacket_LTD& packet = util::packToLTDWithProtobuf(SYNC_LEAVE_PACK_ID, &pb_sync_packet);
+    const zinx::ZinxPacket_LTD packet = util::packToLTDWithProtobuf(SYNC_LEAVE_PACK_ID, &pb_sync_packet);
 
     for (const PlayerPtr& p : surrounding_players) {
         p->SendPacket(packet);

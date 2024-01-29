@@ -6,7 +6,7 @@
 
 using namespace mmo;
 
-void ChatHandler::Handle(zinx::RequestContext& ctx) {
+void ChatHandler::Handle(zinx::base::RequestContext& ctx) {
     int32_t pid = util::getPidFromZConnection(ctx.GetConnection());
 
     pb::Talk received_packet;
@@ -17,7 +17,7 @@ void ChatHandler::Handle(zinx::RequestContext& ctx) {
         return;
     }
 
-    /// TODO: Get mmo::WorldManager from zinx::RequestContext instead of to use global variable 
-    const PlayerPtr& p = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    /// TODO: Get mmo::WorldManager from zinx::base::RequestContext instead of to use global variable 
+    const PlayerPtr& p = mmo::GlobalWorldManager->GetPlayerByPid(pid, true);
     p->WorldChat(*received_packet.mutable_content(), *mmo::GlobalWorldManager);
 }

@@ -1,14 +1,11 @@
 project(MMO)
 
-include_directories(${CMAKE_SOURCE_DIR}/app_demo)
+include_directories(${MuduoNet_INCLUDE_DIR})
 
-if(MuduoNet_INCLUDE_DIR)
-    include_directories(${MuduoNet_INCLUDE_DIR})
-endif()
+file(GLOB_RECURSE MMO_SOURCES "./*.cpp")
 
-file(GLOB MMO_SOURCES "./**/*" "./mmo_server.cpp")
-
-find_package(Protobuf REQUIRED CONFIG)
+add_subdirectory(./api)
 
 add_executable(${PROJECT_NAME} ${MMO_SOURCES})
-target_link_libraries(${PROJECT_NAME} zinx-muduo protobuf::libprotobuf)
+target_link_libraries(${PROJECT_NAME} PRIVATE zinx-muduo proto-api)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/app_demo)

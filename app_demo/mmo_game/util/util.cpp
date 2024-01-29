@@ -4,7 +4,7 @@
 
 zinx::ZinxPacket_LTD mmo::util::packToLTDWithProtobuf(uint32_t id, google::protobuf::Message* msg) {
     std::string encoded_msg = msg->SerializeAsString();
-    // assert that serializeation is successful
+    // assert that serialization is successful
     assert(!encoded_msg.empty());
 
     zinx::ZinxPacket_LTD packet(id, std::move(encoded_msg));
@@ -12,7 +12,7 @@ zinx::ZinxPacket_LTD mmo::util::packToLTDWithProtobuf(uint32_t id, google::proto
 }
 
 /// TODO: Accept boundary values to dynamically adjust the range of random numbers
-mmo::Position mmo::util::getRandomPoistion() {
+mmo::Position mmo::util::getRandomPosition() {
     std::default_random_engine rand_engine;
     std::uniform_int_distribution<int> random(0, 30);
     rand_engine.seed(time(nullptr));

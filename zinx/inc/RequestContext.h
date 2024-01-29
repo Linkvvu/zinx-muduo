@@ -5,15 +5,16 @@
 #include <zinx/inc/ZConnection.h>
 
 namespace zinx {
-
+namespace base {
+    
 /// RequestContext is a abstract base class
-/// The class Should hold the lifecycle of all context to prevent accessing destroyed data
+/// The class should hold the lifecycle of all context to prevent accessing destroyed data
 /// Users can implement a derived class to include more context
 class RequestContext : Copyable {
 public:
-    RequestContext(const muduo::TcpConnectionPtr& conn, const zinx::PacketPtr& p)
+    RequestContext(const muduo::TcpConnectionPtr& conn, zinx::PacketPtr&& p)
         : conn_(conn)
-        , packet_(p)
+        , packet_(std::move(p))
         { }
 
     const ZinxConnectionPtr& GetConnection() const
@@ -32,6 +33,7 @@ private:
     PacketPtr packet_;
 };
 
+} // namespace base 
 } // namespace zinx 
 
 #endif // ZINX_INTERFACE_REQUEST_CONTEXT_H

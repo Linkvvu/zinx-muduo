@@ -8,7 +8,7 @@ namespace mmo {
 /// FIXME: 解耦合 game map & AOI-Manager
 /// Manages a constant world map
 /// All member is constant, so AOI_Manager is thread safe
-class AOI_Manager : zinx::NonCopyable {
+class AOI_Manager : zinx::base::NonCopyable {
 public:
     AOI_Manager(float world_length, float world_width, float cell_size);
     
@@ -49,11 +49,11 @@ private:
     int GetRowIndex(const Position& p) const
     { return static_cast<int>(p.Z / cellSize_); }
 
-    bool IsVaildGrid(int row, int col) const 
+    bool IsValidGrid(int row, int col) const 
     { return (row >= 0 && row < countY_) && (col >= 0 && col < countX_); }
 
 private:
-    const float worldlength_;
+    const float worldLength_;
     const float worldWidth_;
     const float cellSize_;
     const int countX_;  // number of grids in a row

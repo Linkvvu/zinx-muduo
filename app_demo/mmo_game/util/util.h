@@ -11,7 +11,7 @@ namespace util {
 
     /// Pack a LTD-packet With Protobuf 
     extern zinx::ZinxPacket_LTD packToLTDWithProtobuf(uint32_t id, google::protobuf::Message* msg);
-    extern mmo::Position getRandomPoistion();
+    extern mmo::Position getRandomPosition();
     extern int32_t getPidFromZConnection(const zinx::ZinxConnectionPtr& ctx);
 
 } // namespace util 

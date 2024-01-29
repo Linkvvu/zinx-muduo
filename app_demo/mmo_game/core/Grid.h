@@ -10,7 +10,7 @@
 namespace mmo {
 
 /// Represent a Grid in world map, all operations are thread safe on it 
-class Grid : zinx::NonCopyable {
+class Grid : zinx::base::NonCopyable {
 public:
     Grid() = default;
     

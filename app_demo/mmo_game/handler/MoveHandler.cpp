@@ -6,7 +6,7 @@
 
 using namespace mmo;
 
-void MoveHandler::Handle(zinx::RequestContext& ctx) {
+void MoveHandler::Handle(zinx::base::RequestContext& ctx) {
     int32_t pid = util::getPidFromZConnection(ctx.GetConnection());    
     pb::Position received_packet;
     bool ok = received_packet.ParseFromString(ctx.GetPacket()->GetPayload());
@@ -16,8 +16,8 @@ void MoveHandler::Handle(zinx::RequestContext& ctx) {
         return;
     }
 
-    /// TODO: Get mmo::WorldManager from zinx::RequestContext instead of to use global variable 
-    const PlayerPtr& p = mmo::GlobalWorldManager->GetPlayerByPid(pid);
+    /// TODO: Get mmo::WorldManager from zinx::base::RequestContext instead of to use global variable 
+    const PlayerPtr& p = mmo::GlobalWorldManager->GetPlayerByPid(pid, true);
     p->UpdatePos(mmo::Position{
             static_cast<int>(received_packet.x()), static_cast<int>(received_packet.y()),
             static_cast<int>(received_packet.z()), static_cast<int>(received_packet.v())

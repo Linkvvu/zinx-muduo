@@ -1,12 +1,11 @@
 #include <muduo/base/Logging.h>
 #include <zinx/inc/ZConfig.h>
 #include <zinx/inc/ZRouter.h>
-// #include <zinx/inc/ZPacket.h>
 #include <zinx/inc/ZPacket_LTD.h>
 
 using namespace zinx;
 
-void ZinxRouter::RouteAndHandle(RequestContext& req) const {
+void ZinxRouter::RouteAndHandle(base::RequestContext& req) const {
     assert(dynamic_cast<const ZinxPacket_LTD*>(req.GetPacket()) != nullptr);
 
     /// FIXME: use dynamic_cast for the safe down-cast
@@ -20,14 +19,10 @@ void ZinxRouter::RouteAndHandle(RequestContext& req) const {
 
     zinx::Handler* handler = it->second.get();
 
-    /* handle by work-threads*/
-    workerThreads_.Run(
-        [req, handler]() mutable {  // catch by value to ensure adequate lifecycle 
-            handler->PreHandle(req);
-            handler->Handle(req);
-            handler->PostHandle(req);
-        }
-    );
+    /* handles the request*/
+    handler->PreHandle(req);
+    handler->Handle(req);
+    handler->PostHandle(req);
 }
 
 bool ZinxRouter::AddHandler(uint32_t id, std::unique_ptr<Handler> && handler) {
@@ -38,10 +33,4 @@ bool ZinxRouter::AddHandler(uint32_t id, std::unique_ptr<Handler> && handler) {
     } 
     mapper_[id] = std::move(handler);
     return true;
-}
-
-void ZinxRouter::InitWorkerConfig() {
-    // workerThreads_.SetThreadInitCallback();
-    workerThreads_.SetMaxQueueSize(GlobalConfig::max_task_queue_size);
-    workerThreads_.Start(static_cast<int>(GlobalConfig::worker_thread_num));
 }

@@ -5,7 +5,7 @@
 using namespace mmo;
 
 AOI_Manager::AOI_Manager(float world_length, float world_width, float cell_size)
-    : worldlength_(world_length)
+    : worldLength_(world_length)
     , worldWidth_(world_width)
     , cellSize_(cell_size)
     , countX_(static_cast<int>(world_length / cell_size))
@@ -21,8 +21,8 @@ AOI_Manager::AOI_Manager(float world_length, float world_width, float cell_size)
         }
     }
 
-    LOG_INFO << "The world map is initialized, detail: cell size="
-            << cellSize_ << ", row number=" << countY_ << " column number=" << countX_;
+    LOG_INFO << "The world map is initialized, detail: cell-size="
+            << cellSize_ << ", row=" << countY_ << " column=" << countX_;
 }
 
 std::vector<int32_t> AOI_Manager::GetSurroundingPlayersByPid(int32_t pid, const Position& pos) const {
@@ -45,7 +45,7 @@ std::vector<const Grid*> mmo::AOI_Manager::GetSudokuByPosition(const Position & 
         for (int y = -1; y <= 1; y++) {
             int cur_row = center_row_idx + x;
             int cur_col = center_col_idx + y;
-            if (IsVaildGrid(cur_row, cur_col)) {
+            if (IsValidGrid(cur_row, cur_col)) {
                 Grid* cur_grid = worldMap_[cur_row][cur_col].get();
                 assert(cur_grid != nullptr);
                 result.push_back(cur_grid);
@@ -58,6 +58,6 @@ std::vector<const Grid*> mmo::AOI_Manager::GetSudokuByPosition(const Position & 
 Grid& AOI_Manager::GetGridByPosition(const Position& p) const {
     const int row = GetRowIndex(p);
     const int col = GetColumnIndex(p);
-    assert(IsVaildGrid(row, col));
+    assert(IsValidGrid(row, col));
     return worldMap_[row][col].operator*();
 }

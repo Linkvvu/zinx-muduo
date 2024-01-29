@@ -2,14 +2,16 @@
 #define ZINX_COPYABLE_H
 
 namespace zinx {
+namespace base {
 
 class Copyable {
-protected:
+public:
     Copyable() = default;
     Copyable(const Copyable&) = default;
     Copyable& operator=(const Copyable&) = default;
 };
 
+} // namespace base 
 } // namespace zinx 
 
 #endif // ZINX_COPYABLE_H

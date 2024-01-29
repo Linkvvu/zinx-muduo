@@ -8,15 +8,15 @@
 #include <algorithm>
 
 namespace zinx {
+namespace base {
+
 /// The class is a abstract base class for packet
 class Packet : Copyable {
 public:
     /// construct a empty packet by default
     Packet()
         : data_(std::string())
-    {
-        // Note: Can`t use polymorphic (virtual) method in constructor and destructor!!!
-    }
+    { }
 
     virtual ~Packet() noexcept = default;
 
@@ -27,10 +27,10 @@ public:
 
     virtual uint32_t GetHeaderLength() const = 0;
 
-    const std::string& GetAllData() const
+    const std::string& GetData() const
     { return data_; }
 
-    std::string& GetAllData()
+    std::string& GetData()
     { return data_; }
 
     std::string GetPayload() 
@@ -47,8 +47,10 @@ public:
 protected:
     std::string data_;
 };
+} // namespace base 
 
-using PacketPtr = std::shared_ptr<Packet>;
+
+using PacketPtr = std::unique_ptr<base::Packet>;
 
 } // namespace zinx 
 

@@ -28,7 +28,7 @@ std::shared_ptr<Player> CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, con
 /// The associated TCP connection is held.
 /// Should destroy the mmo::Player instance When corresponding Player offline,
 /// so that disconnect the underlying connection
-class Player : zinx::NonCopyable {
+class Player : zinx::base::NonCopyable {
     friend std::shared_ptr<Player> CreateNewPlayer(const zinx::ZinxConnectionPtr& conn, const Position& pos);
     Player(int32_t pid, const zinx::ZinxConnectionPtr& conn, const Position& pos);
     
@@ -59,13 +59,13 @@ public:
     void UpdatePos(const Position& new_pos, const mmo::WorldManager& wm);
 
 private:
-    void SendPacket(const zinx::Packet& p)
-    { conn_->Send(p.GetAllData()); }
+    void SendPacket(const zinx::base::Packet& p)
+    { conn_->Send(p.GetData()); }
 
     void HandleCrossedGrid(const Position& old_pos, const Position& new_pos, const mmo::WorldManager& wm);
 
 private:
-    int32_t pid_;
+    const int32_t pid_;
     zinx::ZinxConnectionPtr conn_;  // hold a connection handle
     Position pos_;
 };

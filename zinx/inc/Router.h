@@ -5,14 +5,17 @@
 #include <zinx/inc/RequestContext.h>
 
 namespace zinx {
+namespace base {
 
-/// Router's job is to route incoming requests to the handler associated with it.
+/// The Router's job is to route incoming requests to the handler associated with it.
 class Router {
 public:
     virtual void RouteAndHandle(RequestContext& req) const = 0;
     virtual ~Router() noexcept = default;
 };
 
-} // namespace zinx 
+} // namespace zinx     
+} // namespace base 
+
 
 #endif // ZINX_INTERFACE_ROUTER_H

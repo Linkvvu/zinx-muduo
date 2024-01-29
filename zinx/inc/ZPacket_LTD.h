@@ -7,9 +7,9 @@
  * +------------------------+-----------------+---------------------+
  * |  DataLength (uint32_t) |  ID (uint32_t)  |      Payload        |
  * |     little endian      |  little endian  |                     |
- * +---------------------+-----------------------+------------------+
+ * +------------------------+-----------------+---------------------+
  * 0                     4                       8                    size
- * @endcond
+ * @endcode
  */
 
 #if !defined(ZINX_PACKET_LTD_H)
@@ -23,14 +23,14 @@
 namespace zinx {
 
 /// ZinxPacket is inherited from Packet, to implement the LTD packet
-class ZinxPacket_LTD : public Packet {
+class ZinxPacket_LTD : public base::Packet {
     
     static const uint32_t kHeaderLength = 8;
 
 public:
     using Packet::Packet;   // use Packet`s constructor
     
-    /// constrcut a ZinxPacket_LTD with specific id and payload
+    /// construct a ZinxPacket_LTD with specific id and payload
     ZinxPacket_LTD(uint32_t id, const std::string& payload);
 
     virtual uint32_t GetHeaderLength() const

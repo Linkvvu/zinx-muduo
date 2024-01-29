@@ -15,18 +15,18 @@ namespace zinx {
  * |  ID (uint32_t)      | DataLength (uint32_t) |      Payload        |
  * +---------------------+-----------------------+---------------------+
  * 0                     4                       8                    size
- * @endcond
+ * @endcode
  */
 
 /// ZinxPacket is inherited from Packet, to implement the TLD packet
-class ZinxPacket : public Packet {
+class ZinxPacket : public base::Packet {
     
     static const uint32_t kHeaderLength = 8;
 
 public:
     using Packet::Packet;   // use Packet`s constructor
     
-    /// constrcut a ZinxPacket with specific id and payload
+    /// construct a ZinxPacket with specific id and payload
     ZinxPacket(uint32_t id, const std::string& payload);
 
     virtual uint32_t GetHeaderLength() const
