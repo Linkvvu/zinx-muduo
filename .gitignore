@@ -36,3 +36,10 @@ build
 *.exe
 *.out
 *.app
+
+build
+
+.vscode
+
+.gitignore
+.dockerignore

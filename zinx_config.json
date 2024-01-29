@@ -1,0 +1,9 @@
+{
+    "server_name": "zinx-muduo",
+    "version": "V0.1",
+    "host": "0.0.0.0",
+    "port": 8999,
+    "io_thread_num": 3,
+    "worker_thread_num": 0,
+    "max_task_queue_size": 30
+}
