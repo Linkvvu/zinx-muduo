@@ -67,8 +67,8 @@ void mmo::Player::SyncWithSurrounding(const mmo::WorldManager& wm) {
     }
 
     mmo::pb::SyncPlayers sync_players_packet;
-    for (auto begin = player_info_packets.begin(); begin != player_info_packets.end(); ++begin) {
-        *sync_players_packet.mutable_ps()->Add() = *begin;
+    for (std::vector<mmo::pb::Player>::iterator begin = player_info_packets.begin(); begin != player_info_packets.end(); ++begin) {
+        sync_players_packet.mutable_ps()->Add(std::move(*begin));
     }
     // Support after 25.x
     // sync_players_packet.mutable_ps()->Add(player_info_packets.begin(), player_info_packets.end());
@@ -102,7 +102,10 @@ void mmo::Player::WorldChat(const std::string& content, const mmo::WorldManager&
 
 void mmo::Player::UpdatePos(const Position& new_pos, const mmo::WorldManager& wm) {
     const Position old_pos = GetPosition();
-    pos_ = new_pos;
+    {
+        std::unique_lock<std::shared_mutex> guard(rwMutex_);
+        pos_ = new_pos;
+    }
 
     Grid& old_gird = wm.GetAoiManager().GetGridByPosition(old_pos);
     Grid& new_gird = wm.GetAoiManager().GetGridByPosition(new_pos);
@@ -117,7 +120,7 @@ void mmo::Player::UpdatePos(const Position& new_pos, const mmo::WorldManager& wm
     pb::BroadCast pb_bc_packet;
     pb_bc_packet.set_pid(GetPid());
     pb_bc_packet.set_tp(BC_MOVE_FIELD);
-    SetPosition(pb_bc_packet.mutable_p(), GetPosition());
+    SetPosition(pb_bc_packet.mutable_p(), const_cast<const Player*>(this)->GetPosition());
     const zinx::ZinxPacket_LTD encoded_packet = util::packToLTDWithProtobuf(BROADCAST_PACK_ID, &pb_bc_packet);
 
     // Send current position to all the surrounding players

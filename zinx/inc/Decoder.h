@@ -12,7 +12,7 @@ class Decoder {
 public:
     /// @brief Decode a complete packet
     /// @param input_buf connection`s input data
-    /// @return if a complete packet is received, return the @c PacketPtr; otherwise, return @c std::shared_ptr<T>(nullptr)
+    /// @return if a complete packet is received, return the @c PacketPtr; otherwise, return @c std::unique_ptr<T>(nullptr)
     virtual PacketPtr Decode(muduo::Buffer* input_buf) const = 0;
 
     /// for polymorphism of abstract base class

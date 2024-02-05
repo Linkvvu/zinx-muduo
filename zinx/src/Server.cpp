@@ -54,10 +54,14 @@ void base::AbstractServer::HandleNewConnection(const muduo::TcpConnectionPtr& co
 }
 
 void base::AbstractServer::HandleOnMessage(const muduo::TcpConnectionPtr& conn, muduo::Buffer* buf, const muduo::ReceiveTimePoint_t& recvTime) {
-    PacketPtr packet_ptr = decoder_->Decode(buf);
-    if (!packet_ptr) {
-        return; // wait whole message
+    while (true) {
+        // resolves all the incoming data
+        PacketPtr packet_ptr = decoder_->Decode(buf);
+        if (!packet_ptr) {
+            // incomplete pack, wait for the new read event 
+            return;
+        }
+        std::shared_ptr<RequestContext> req_context = WrapRequestCtx(conn, std::move(packet_ptr));
+        router_->RouteAndHandle(*req_context);
     }
-    std::shared_ptr<RequestContext> req_context = WrapRequestCtx(conn, std::move(packet_ptr));
-    router_->RouteAndHandle(*req_context);
 }

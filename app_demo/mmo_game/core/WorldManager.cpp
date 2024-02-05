@@ -7,7 +7,7 @@ std::unique_ptr<WorldManager> mmo::GlobalWorldManager {};
 
 void mmo::initGlobalWorldManager() {
     mmo::GlobalWorldManager = std::make_unique<WorldManager>(
-        400.0F, 400.0F, 20.0F
+        1000.0F, 1000.0F, 20.0F
     );
 }
 
@@ -27,7 +27,7 @@ void WorldManager::AddPlayer(std::shared_ptr<Player>&& player) {
     {
         std::unique_lock<std::shared_mutex> guard(rw_mutex_);
         assert(!HasPlayer(player->GetPid()));
-        players_[player->GetPid()] = std::move(player);    
+        players_[pid] = std::move(player);    
     }
 
     aoiManager_.AddPlayerToGrid(pid, pos);
@@ -45,7 +45,7 @@ void WorldManager::RemovePlayerByPid(int32_t pid) {
 
     // remove player instance
     size_t ret = players_.erase(pid);
-    assert(ret == 1);
+    assert(ret == 1); (void)ret;
 }
 
 std::vector<PlayerPtr> WorldManager::GetAllPlayers() const {

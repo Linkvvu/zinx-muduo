@@ -12,7 +12,7 @@ void Grid::RemovePlayer(int32_t pid) {
     std::lock_guard<std::mutex> guard(mutex_);
     assert(HasPlayerByPid(pid));
     size_t ret = players_.erase(pid);
-    assert(ret == 1);
+    assert(ret == 1); (void)ret;
 }
 
 /// time complexity: O(N) 

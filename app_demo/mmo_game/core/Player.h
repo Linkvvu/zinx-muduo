@@ -5,6 +5,7 @@
 #include <zinx/inc/ZConnection.h>
 #include <zinx/inc/NonCopyable.h>
 #include <memory>
+#include <shared_mutex>
 
 namespace mmo {
 
@@ -37,10 +38,16 @@ public:
     { return pid_; }
 
     const Position& GetPosition() const
-    { return pos_; }
+    {
+        std::shared_lock<std::shared_mutex> guard(rwMutex_);
+        return pos_; 
+    }
 
     Position& GetPosition()
-    { return pos_; }
+    { 
+        std::shared_lock<std::shared_mutex> guard(rwMutex_);
+        return pos_;
+    }
 
     /// Sync the current player's PID to his client 
     void SyncPid();
@@ -65,9 +72,11 @@ private:
     void HandleCrossedGrid(const Position& old_pos, const Position& new_pos, const mmo::WorldManager& wm);
 
 private:
-    const int32_t pid_;
+    const int32_t pid_;             // constant, doesn't need to sync
     zinx::ZinxConnectionPtr conn_;  // hold a connection handle
+    
     Position pos_;
+    mutable std::shared_mutex rwMutex_;   // for syncly access the field pos_
 };
 
 } // namespace mmo 

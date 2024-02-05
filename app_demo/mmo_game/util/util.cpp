@@ -13,9 +13,8 @@ zinx::ZinxPacket_LTD mmo::util::packToLTDWithProtobuf(uint32_t id, google::proto
 
 /// TODO: Accept boundary values to dynamically adjust the range of random numbers
 mmo::Position mmo::util::getRandomPosition() {
-    std::default_random_engine rand_engine;
+    static std::default_random_engine rand_engine;
     std::uniform_int_distribution<int> random(0, 30);
-    rand_engine.seed(time(nullptr));
 
     return mmo::Position {
         160+random(rand_engine),    // length
