@@ -29,7 +29,7 @@ public:
      * default value: 3
      * brief:
      *      = 0: single-Reactor mode, Acceptor and IO-handler run in same thread
-     *      > 0: mutiple-Reactor mode
+     *      > 0: multiple-Reactor mode
      */
     static size_t io_thread_num;
 

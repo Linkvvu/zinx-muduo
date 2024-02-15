@@ -2,6 +2,7 @@
 #define ZINX_INTERFACE_REQUEST_CONTEXT_H
 
 #include <zinx/inc/Packet.h>
+#include <zinx/inc/NonCopyable.h>
 #include <zinx/inc/ZConnection.h>
 
 namespace zinx {
@@ -10,7 +11,7 @@ namespace base {
 /// RequestContext is a abstract base class
 /// The class should hold the lifecycle of all context to prevent accessing destroyed data
 /// Users can implement a derived class to include more context
-class RequestContext : Copyable {
+class RequestContext : NonCopyable {
 public:
     RequestContext(const muduo::TcpConnectionPtr& conn, zinx::PacketPtr&& p)
         : conn_(conn)

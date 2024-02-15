@@ -19,7 +19,10 @@ class ZinxServer : public base::AbstractServer {
     
 public:
     bool AddHandler(uint32_t id, std::unique_ptr<Handler>&& handler) 
-    { return static_cast<ZinxRouter*>(router_.get())->AddHandler(id, std::move(handler)); }
+    {
+        LOG_INFO << "Add API id=" << id;
+        return static_cast<ZinxRouter*>(router_.get())->AddHandler(id, std::move(handler));
+    }
 
 private:
     using AbstractServer::WrapRequestCtx;

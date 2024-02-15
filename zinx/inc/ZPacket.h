@@ -3,7 +3,7 @@
 #define ZINX_PACKET_H
 
 #include <muduo/base/Endian.h>
-#include <zinx/inc/Packet.h>
+#include <zinx/inc/TagPacket.h>
 #include <cstdint>
 
 namespace zinx {
@@ -19,12 +19,12 @@ namespace zinx {
  */
 
 /// ZinxPacket is inherited from Packet, to implement the TLD packet
-class ZinxPacket : public base::Packet {
+class ZinxPacket : public base::TagPacket {
     
     static const uint32_t kHeaderLength = 8;
 
 public:
-    using Packet::Packet;   // use Packet`s constructor
+    using TagPacket::TagPacket;   // use TagPacket's constructor
     
     /// construct a ZinxPacket with specific id and payload
     ZinxPacket(uint32_t id, const std::string& payload);

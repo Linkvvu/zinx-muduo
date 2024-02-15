@@ -16,19 +16,19 @@
 #define ZINX_PACKET_LTD_H
 
 #include <muduo/base/Endian.h>
-#include <zinx/inc/Packet.h>
+#include <zinx/inc/TagPacket.h>
 #include <cstdint>
 #include <cassert>
 
 namespace zinx {
 
 /// ZinxPacket is inherited from Packet, to implement the LTD packet
-class ZinxPacket_LTD : public base::Packet {
+class ZinxPacket_LTD : public base::TagPacket {
     
     static const uint32_t kHeaderLength = 8;
 
 public:
-    using Packet::Packet;   // use Packet`s constructor
+    using TagPacket::TagPacket;   // use TagPacket's constructor
     
     /// construct a ZinxPacket_LTD with specific id and payload
     ZinxPacket_LTD(uint32_t id, const std::string& payload);
